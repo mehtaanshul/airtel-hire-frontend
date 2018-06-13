@@ -1,0 +1,18 @@
+.font-face{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  overflow: hidden;
+}
+.link-style h5{
+	color: #e40000;
+}
+
+a:hover{
+	text-decoration-line: none;	
+}
+.problems-list{
+	overflow: hidden;
+}
+.problems-title{
+	overflow: hidden;
+}

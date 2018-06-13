@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import sample from '../../../img/sample.png';
 
 class Card extends Component {
@@ -38,7 +39,7 @@ class Card extends Component {
         <img className="card-img-top" src={sample} alt="Card image cap"/>
         <div className="card-body">
           <small>{this.props.type}</small>
-          <h5>{this.props.name}</h5>
+          <Link className="link-style" to="/challenge"><h5 >{this.props.name}</h5></Link>
           {this.props.category == 'live' && this.renderLive()}
           {this.props.category == 'upcoming' && this.renderRegister()}
           {this.props.category == 'previous' && this.renderPrevious()}

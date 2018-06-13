@@ -131,7 +131,7 @@ class Home extends Component {
     );
 
     return (
-      <div>
+      <div className="font-face">
         <Header />
         <h2 className="mt-4">Hackathons, Programming Challenges & Coding Competitions</h2>
         

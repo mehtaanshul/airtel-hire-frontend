@@ -6,7 +6,7 @@ class Header extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom border border-light">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
             <img src={logo} height="30" alt="abc"/>
         </a>
         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
