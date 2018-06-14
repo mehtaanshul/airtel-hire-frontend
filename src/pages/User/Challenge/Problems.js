@@ -18,7 +18,7 @@ class Problems extends Component {
           <small className="text-secondary">Apr 15, 2018, 09:00 AM IST - Jun 14, 2018, 11:55 PM IST</small>
         </div>
         <div className="col-lg-8">
-          <button type="button" class="btn btn-info float-right mb-1">Leaderboard</button>
+          <a href="/leaderboard"class="btn btn-info float-right mb-1">Leaderboard</a>
           <a href="/challenge" class="btn btn-info float-right mb-1 mr-2">About Challenge</a>
           <h4 class="text-left">Problems</h4>
           <div class="list-group text-left w-100 problems-list">

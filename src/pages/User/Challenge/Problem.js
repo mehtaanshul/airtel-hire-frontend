@@ -19,7 +19,7 @@ class Problem extends Component {
         </div>
         <div className="row p-4">
           <div className="col-lg-8">
-            <button type="button" class="btn btn-info float-right mb-1">Leaderboard</button>
+            <a href="/leaderboard" class="btn btn-info float-right mb-1">Leaderboard</a>
             <a href="/problems" className="btn btn-info float-right mr-2">All Problems</a>
             <h4 className="text-left problem-title">Problem title</h4>
             
