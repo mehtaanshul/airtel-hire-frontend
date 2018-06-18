@@ -16,3 +16,6 @@ a:hover{
 .problems-title{
 	overflow: hidden;
 }
+.card-img-top{
+	height: 100px;
+}

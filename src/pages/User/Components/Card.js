@@ -8,7 +8,7 @@ class Card extends Component {
       <div>
         <small>Starts on</small>
         <p>{this.props.endDate}, {this.props.endTime}</p>
-        <a href="#" className="btn btn-success">Start Now</a>
+        <a href="/problems" className="btn btn-success">Start Now</a>
       </div>
     );
   }
