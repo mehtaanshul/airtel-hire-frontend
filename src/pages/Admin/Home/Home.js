@@ -38,97 +38,7 @@ class Home extends Component {
   }
 
   render() {
-    /*const challenges = [
-      {
-        "id":"1",
-        "name":"Airtel Crack",
-        "startDate":"16 June",
-        "endDate":"22 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"Hackathon",
-        "category":"upcoming",
-      },
-      {
-        "id":"2",
-        "name":"Airtel Hackathon",
-        "startDate":"10 June",
-        "endDate":"15 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"Machine Learning",
-        "category":"live",
-      },
-      {
-        "id":"3",
-        "name":"Hack Society",
-        "startDate":"05 June",
-        "endDate":"22 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"Competitive",
-        "category":"live",
-      },
-      {
-        "id":"4",
-        "name":"Airtel Hack",
-        "startDate":"05 June",
-        "endDate":"09 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"Blockchain",
-        "category":"previous",
-      },
-      {
-        "id":"5",
-        "name":"Crack the code",
-        "startDate":"16 June",
-        "endDate":"22 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"Machine Learning",
-        "category":"upcoming",
-      },
-      {
-        "id":"6",
-        "name":"Airtel Code-in",
-        "startDate":"08 June",
-        "endDate":"22 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"React JS",
-        "category":"live",
-      },
-      {
-        "id":"7",
-        "name":"Airtel Hiring Challenge",
-        "startDate":"10 June",
-        "endDate":"22 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"Competitive",
-        "category":"live",
-      },
-      {
-        "id":"8",
-        "name":"Thapar Hackathon",
-        "startDate":"16 June",
-        "endDate":"22 June",
-        "startTime":"8:00 AM",
-        "endTime":"8:00 PM",
-        "img":"",
-        "type":"Machine Learning",
-        "category":"upcoming",
-      },
-    ];*/
-
+    
     let filteredChallenges = this.state.challenges.filter(
       (challenge) => {
           if (this.state.challengesCategory == 'all') {
@@ -162,7 +72,7 @@ class Home extends Component {
           <div className="container mt-4">
             <form>
               <div className="row">
-                <div className="col-lg-3">
+                <div className="col-md-3">
                   <div className="form-group">
                     <select value={this.state.challengesCategory} onChange={this.handleChange} className="form-control">
                       <option value="all" >All</option>
@@ -170,6 +80,11 @@ class Home extends Component {
                       <option value="upcoming" >Upcoming</option>
                       <option value="previous" >Previous</option>
                     </select>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="form-group">
+                    <button className="btn btn-outline-success btn-block">Add a new Challenge</button>
                   </div>
                 </div>
               </div>

@@ -36,9 +36,9 @@ class Challenge extends Component {
   render() {
 
     return (
-      <div className="font-face">
+      <div className="complete-body">
         <Header />
-        <img src={sample} className="w-100" alt="Card image cap"/>
+        <img src={sample} className="w-100" alt=""/>
         <div className="jumbotron text-left">
         {this.props.category == 'live' && this.renderLive()}
         {this.renderLive()}

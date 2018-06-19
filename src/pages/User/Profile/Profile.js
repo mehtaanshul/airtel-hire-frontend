@@ -18,7 +18,7 @@ class Problem extends Component {
   render() {
 
     return (
-      <div className="font-face">
+      <div className="complete-body">
         <Header />
         <div className="container-fluid mt-4">
           <div className="col-lg-8">

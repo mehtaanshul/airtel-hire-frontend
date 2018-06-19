@@ -13,13 +13,15 @@ class LoginModal extends Component {
     this.setState({
       showModal:nextProps.show,
     });
-    //console.log("next props ", nextProps);
   }
 
   closeModal(){
     this.setState({
       showModal:false,
     });
+  }
+  onRegister = () => {
+    this.props.openRegisterModal();
   }
 
   renderModal(){
@@ -28,27 +30,27 @@ class LoginModal extends Component {
         <div className="login-modal">
         </div>
         <div className="login-form">
-          <button type="button" class="close" onClick={this.closeModal} aria-label="Close">
+          <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <form className="mb-5 mt-5">
-            <div class="form-group">
+            <div className="form-group">
               <div className="offset-md-1 col-md-10">
                 <label className="float-left label-text">Email Address</label>
-                <input type="email" class="form-control form-input" placeholder="Enter email"/>
+                <input type="email" className="form-control form-input" placeholder="Enter email"/>
               </div>
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <div className="offset-md-1 col-md-10">
                 <label className="float-left label-text">Password</label>
-                <input type="password" class="form-control form-input" placeholder="Password" />
+                <input type="password" className="form-control form-input" placeholder="Password" />
               </div>
             </div>
             <div className="offset-md-1 col-md-10">
-              <button type="submit" class="btn btn-success btn-block">Login</button>
+              <button type="submit" className="btn btn-success btn-block">Login</button>
               <hr/>
               <label className="label-text"> Don't have an account</label>
-              <button type="button" class="btn btn-primary btn-block">Register</button>
+              <button type="button"  onClick={this.onRegister} className="btn btn-primary btn-block">Create Account</button>
             </div>
           </form>
         </div>
@@ -57,8 +59,6 @@ class LoginModal extends Component {
   }
 
   render() {
-    console.log(this.state.showModal);
-
     return (
       <div>
       {this.state.showModal && this.renderModal()}

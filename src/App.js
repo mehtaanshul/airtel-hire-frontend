@@ -9,15 +9,21 @@ import ProblemPage from './pages/User/Challenge/Problem';
 import LeaderboardPage from './pages/User/Challenge/Leaderboard';
 import ProfilePage from './pages/User/Profile/Profile';
 
+import AdminHomePage from './pages/Admin/Home/Home';
+import NewChallengePage from './pages/Admin/Challenge/NewChallenge';
+
 const App = () => (
   <Router>
       <div className="App">
         <Route exact path="/" component={HomePage} />
-        <Route exact path="/challenge" component={ChallengePage} />
-        <Route exact path="/problems" component={ProblemsPage} />
-        <Route exact path="/problem" component={ProblemPage} />
-        <Route exact path="/leaderboard" component={LeaderboardPage} />
-        <Route exact path="/profile" component={ProfilePage} />
+        <Route path="/challenge" component={ChallengePage} />
+        <Route path="/problems" component={ProblemsPage} />
+        <Route path="/problem" component={ProblemPage} />
+        <Route path="/leaderboard" component={LeaderboardPage} />
+        <Route path="/profile" component={ProfilePage} />
+        
+        <Route path="/admin" component={AdminHomePage} />
+        <Route path="/admin/newchallenge" component={NewChallengePage} />
       </div>
   </Router>
   );

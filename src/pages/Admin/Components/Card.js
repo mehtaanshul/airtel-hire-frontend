@@ -36,7 +36,7 @@ class Card extends Component {
   render() {
     return (
       <div className="card mb-4">
-        <img className="card-img-top" src={sample} alt="Card"/>
+        <img className="card-img-top" src={sample} alt=""/>
         <div className="card-body">
           <small>{this.props.type}</small>
           <Link className="link-style" to="/challenge"><h5 >{this.props.name}</h5></Link>

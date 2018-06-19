@@ -22,6 +22,12 @@
   font-size: large;
 }
 
+.complete-body {
+  font-family: 'Lato', sans-serif;
+  padding-top: 60px;
+  overflow: hidden;
+}
+
 .login-modal {
   z-index: 1050;
   position: absolute;
@@ -39,14 +45,15 @@
   border-radius: 4px;
 }
 
-.login-form .form-input{
+.form-input{
   font-size: 14px;
 }
 
-.login-form .label-text {
+.label-text {
   font-weight: 300;
   font-size: 14px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  margin-left: 2px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -56,10 +63,6 @@
   }
 }
 
-/* .header-login-button{
-  cursor: pointer;
-}
- */
 
 @media only screen and (min-width: 768px) {
   .login-form{

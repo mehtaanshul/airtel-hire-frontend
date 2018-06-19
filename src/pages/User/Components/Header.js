@@ -9,35 +9,58 @@ class Header extends Component {
     super(props);
     this.state = {
       showLoginModal:false,
+      showRegisterModal:false,
+      reRender:false,
     }
     this.openLoginModal = this.openLoginModal.bind(this);
+    this.changeUserStatus = this.changeUserStatus.bind(this);
   }
 
   openLoginModal(){
     this.setState({
-      showLoginModal: true,
+      showLoginModal: !this.state.showLoginModal,
+      showRegisterModal: false,
+    });
+  }
+
+  openRegisterModal = () => {
+    this.setState({
+      showLoginModal: false,
+      showRegisterModal: true,
+    });
+    {console.log(this.state.showRegisterModal)}
+  }
+
+  renderLoginButton = () => {
+    return (<button type="button" className="btn btn-outline-success btn-sm" onClick={this.openLoginModal} >Login / Sign Up</button>);
+  }
+
+  renderUserButton = () => {
+    return (<a className="btn btn-outline-info btn-sm" href="/profile" >Welcome, User</a>); 
+  }
+  changeUserStatus(){
+    this.setState({
+      reRender:true,
     });
   }
 
   render() {
+
+    let userLoggedIn = sessionStorage["user"] ? true : false;
+
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom border border-light">
+        <nav className="navbar navbar-expand-lg navbar-light fixed-top bg-white border-bottom border border-light">
           <a className="navbar-brand" href="/">
               <img src={logo} height="30" alt="abc"/>
           </a>
           <div className="collapse navbar-collapse d-flex justify-content-end">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <a className="nav-link">
-                	<img  src={login} onClick={this.openLoginModal} height="30" alt="abc"/>
-                </a>
-              </li>
-            </ul>
+            {userLoggedIn && this.renderUserButton()}
+            {!userLoggedIn && this.renderLoginButton()}
           </div>
         </nav>
-        <LoginModal show={this.state.showLoginModal} />
-        <RegisterModal show={false} />
+        <LoginModal show={this.state.showLoginModal} openRegisterModal={this.openRegisterModal} />
+        <RegisterModal show={this.state.showRegisterModal} changeUserStatus={this.changeUserStatus} />
       </div>
     );
   }

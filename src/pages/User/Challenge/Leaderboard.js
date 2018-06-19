@@ -11,7 +11,7 @@ class Leaderboard extends Component {
   render() {
 
     return (
-      <div className="font-face">
+      <div className="complete-body">
         <Header />
         <div className="text-left problems-heading bg-light p-4 mb-4">
           <h1>Airtel Crack the Code</h1>
