@@ -34,7 +34,7 @@ class RegisterModal extends Component {
 
   onSubmit(){
 
-    let url = 'http://192.168.1.26:8081/register' ;
+    let url = 'http://192.168.1.26:8080/register' ;
 
     fetch(url,{
          method: 'post',
@@ -53,14 +53,16 @@ class RegisterModal extends Component {
         .then((res)=>{
           if(res['status']==='success'){
             let user = {
-              uid: res['uid'],
+              uid: res['id'],
               fullname: this.state.fullname,
             }
-            sessionStorage['user'] = JSON.stringify(user);
+            sessionStorage.setItem("user",JSON.stringify(user));
+            //this.props.changeUserStatus();
+            window.location.reload();
             this.setState({
               showModal:false,
             });
-            this.props.changeUserStatus();
+            
           }
         }, (error)=>{
             console.log(error);

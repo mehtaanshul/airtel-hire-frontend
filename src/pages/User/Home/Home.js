@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import Card from '../Components/Card';
 import sample from '../../../img/sample.png';
+import loader from '../../../img/loader.svg';
 
 class Home extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class Home extends Component {
     this.state = {
       challengesCategory:'all',
       challenges:[],
+      loading:true,
     };
   }
 
@@ -17,13 +19,8 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    /*const url = new URL(document.URL);
-    const params = new URLSearchParams(url.search.slice(1));
-    const type = params.get('type');
-    const id = params.get('id');*/
 
-    let url = 'http://192.168.1.26:8081/getdetails'
-    //console.log("here");
+    let url = 'http://192.168.1.26:8080/challenges';
     fetch(url)
         .then(res => res.json())
         .then((result) => {
@@ -31,6 +28,7 @@ class Home extends Component {
           //console.log(result);
           this.setState({
             challenges:result,
+            loading:false,
           });
         }, (error) => {
             console.log(error);
@@ -40,8 +38,8 @@ class Home extends Component {
   render() {
     /*const challenges = [
       {
-        "id":"1",
-        "name":"Airtel Crack",
+        "cid":"1",
+        "cname":"Airtel Crack",
         "startDate":"16 June",
         "endDate":"22 June",
         "startTime":"8:00 AM",
@@ -51,8 +49,8 @@ class Home extends Component {
         "category":"upcoming",
       },
       {
-        "id":"2",
-        "name":"Airtel Hackathon",
+        "cid":"2",
+        "cname":"Airtel Hackathon",
         "startDate":"10 June",
         "endDate":"15 June",
         "startTime":"8:00 AM",
@@ -62,8 +60,8 @@ class Home extends Component {
         "category":"live",
       },
       {
-        "id":"3",
-        "name":"Hack Society",
+        "cid":"3",
+        "cname":"Hack Society",
         "startDate":"05 June",
         "endDate":"22 June",
         "startTime":"8:00 AM",
@@ -73,8 +71,8 @@ class Home extends Component {
         "category":"live",
       },
       {
-        "id":"4",
-        "name":"Airtel Hack",
+        "cid":"4",
+        "cname":"Airtel Hack",
         "startDate":"05 June",
         "endDate":"09 June",
         "startTime":"8:00 AM",
@@ -84,8 +82,8 @@ class Home extends Component {
         "category":"previous",
       },
       {
-        "id":"5",
-        "name":"Crack the code",
+        "cid":"5",
+        "cname":"Crack the code",
         "startDate":"16 June",
         "endDate":"22 June",
         "startTime":"8:00 AM",
@@ -95,8 +93,8 @@ class Home extends Component {
         "category":"upcoming",
       },
       {
-        "id":"6",
-        "name":"Airtel Code-in",
+        "cid":"6",
+        "cname":"Airtel Code-in",
         "startDate":"08 June",
         "endDate":"22 June",
         "startTime":"8:00 AM",
@@ -106,8 +104,8 @@ class Home extends Component {
         "category":"live",
       },
       {
-        "id":"7",
-        "name":"Airtel Hiring Challenge",
+        "cid":"7",
+        "cname":"Airtel Hiring Challenge",
         "startDate":"10 June",
         "endDate":"22 June",
         "startTime":"8:00 AM",
@@ -117,8 +115,8 @@ class Home extends Component {
         "category":"live",
       },
       {
-        "id":"8",
-        "name":"Thapar Hackathon",
+        "cid":"8",
+        "cname":"Thapar Hackathon",
         "startDate":"16 June",
         "endDate":"22 June",
         "startTime":"8:00 AM",
@@ -149,38 +147,53 @@ class Home extends Component {
         startTime={challenge.startTime}
         endTime={challenge.endTime}
         startDate={challenge.startDate}
-        endDate={challenge.endDate} 
+        endDate={challenge.endDate}
+        cid={challenge.cid}
+        login={() => { this.child.openLoginModal(); }} 
         />
       </div> 
     );
 
-    return (
-      <div className="complete-body">
-        <Header />
-        <div className="bg-light p-4">
-          <h3 >Hackathons, Programming Challenges & Coding Competitions</h3>
-          <div className="container mt-4">
-            <form>
-              <div className="row">
-                <div className="col-lg-3">
-                  <div className="form-group">
-                    <select value={this.state.challengesCategory} onChange={this.handleChange} className="form-control">
-                      <option value="all" >All</option>
-                      <option value="live" >Live</option>
-                      <option value="upcoming" >Upcoming</option>
-                      <option value="previous" >Previous</option>
-                    </select>
+    if(this.state.loading){
+      return (
+        <div>
+        <Header/>
+          <div className="loader-svg">
+            <img src={loader}/>
+          </div>
+        </div>
+      );
+    }
+
+    else{
+      return (
+        <div className="complete-body">
+          <Header ref={instance => { this.child = instance; }} />
+          <div className="bg-light p-4">
+            <h3 >Hackathons, Programming Challenges & Coding Competitions</h3>
+            <div className="container mt-4">
+              <form>
+                <div className="row">
+                  <div className="col-lg-3">
+                    <div className="form-group">
+                      <select value={this.state.challengesCategory} onChange={this.handleChange} className="form-control">
+                        <option value="all" >All</option>
+                        <option value="live" >Live</option>
+                        <option value="upcoming" >Upcoming</option>
+                        <option value="previous" >Previous</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
+              </form>
+              <div className="row">
+                {cards}
               </div>
-            </form>
-            <div className="row">
-              {cards}
-            </div>
-          </div>  
+            </div>  
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

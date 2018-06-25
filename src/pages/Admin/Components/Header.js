@@ -8,7 +8,6 @@ class Header extends Component {
       showLoginModal:false,
       showRegisterModal:false,
     }
-    this.openLoginModal = this.openLoginModal.bind(this);
   }
 
   render() {
@@ -25,10 +24,13 @@ class Header extends Component {
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <a className="nav-link" href="/admin/">All challenges</a>
+                <a className="nav-link" href="/admin">All challenges</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/admin/newchallenge">New challenge</a>
+                <a className="nav-link" href="/newchallenge">New challenge</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/submissions">Submissions</a>
               </li>
             </ul>
           </div>

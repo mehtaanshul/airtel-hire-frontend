@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 
-class LoginModal extends Component {
+class RatingModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal:this.props.show,
-      emailid:'',
-      password:'',
-      loginerror:'',
     };
     this.closeModal = this.closeModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -31,9 +28,6 @@ class LoginModal extends Component {
     this.setState(this.state);
   }
   
-  onRegister = () => {
-    this.props.openRegisterModal();
-  }
 
   onSubmit(){
 
@@ -77,33 +71,21 @@ class LoginModal extends Component {
   renderModal(){
     return (
       <div>
-        <div className="login-modal">
+        <div className="rating-modal">
         </div>
-        <div className="login-form">
+        <div className="rating-modal-body">
           <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <form className="mb-5 mt-5">
-            <div className="form-group">
-              <div className="offset-md-1 col-md-10">
-                <label className="float-left label-text">Email Address</label>
-                <input type="email" name="emailid" onChange={this.handleChange} value={this.state.email} className="form-control form-input" placeholder="Enter email"/>
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="offset-md-1 col-md-10">
-                <label className="float-left label-text">Password</label>
-                <input type="text" name="password" onChange={this.handleChange} value={this.state.password} className="form-control form-input" placeholder="Password" />
-              </div>
-            </div>
+          <div className="form-group mt-4">
             <div className="offset-md-1 col-md-10">
-              <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">Login</button>
-              <small>{this.state.loginerror}</small>
-              <hr/>
-              <label className="label-text"> Don't have an account</label>
-              <button type="button"  onClick={this.onRegister} className="btn btn-primary btn-block">Create Account</button>
+              <label className="float-left label-text">Score</label>
+              <input type="number" name="score" onChange={this.handleChange} value={this.state.score} className="form-control form-input" placeholder="Enter score"/>
             </div>
-          </form>
+          </div>
+          <div className="offset-md-1 col-md-10 mb-4">
+            <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">Submit score</button>
+          </div>
         </div>
       </div>
     );
@@ -118,4 +100,4 @@ class LoginModal extends Component {
   }
 }
 
-export default LoginModal;
+export default RatingModal;

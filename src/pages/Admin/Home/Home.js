@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import Card from '../Components/Card';
 import sample from '../../../img/sample.png';
+import { Link } from "react-router-dom";
 
 class Home extends Component {
   constructor(props) {
@@ -17,13 +18,9 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    /*const url = new URL(document.URL);
-    const params = new URLSearchParams(url.search.slice(1));
-    const type = params.get('type');
-    const id = params.get('id');*/
 
-    let url = 'http://192.168.1.26:8081/getdetails'
-    //console.log("here");
+    let url = 'http://192.168.1.26:8080/challenges'
+    
     fetch(url)
         .then(res => res.json())
         .then((result) => {
@@ -68,7 +65,7 @@ class Home extends Component {
       <div className="complete-body">
         <Header />
         <div className="bg-light p-4">
-          <h3 >Hackathons, Programming Challenges & Coding Competitions</h3>
+          <h3 >All Challenges</h3>
           <div className="container mt-4">
             <form>
               <div className="row">
@@ -84,7 +81,7 @@ class Home extends Component {
                 </div>
                 <div className="col-md-3">
                   <div className="form-group">
-                    <button className="btn btn-outline-success btn-block">Add a new Challenge</button>
+                    <Link to={"/newchallenge"} className="btn btn-outline-success btn-block">Add a new Challenge</Link>
                   </div>
                 </div>
               </div>

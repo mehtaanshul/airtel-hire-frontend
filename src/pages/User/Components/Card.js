@@ -8,7 +8,17 @@ class Card extends Component {
       <div>
         <small>Started on</small>
         <p>{this.props.startDate}, {this.props.startTime}</p>
-        <a href="/problems" className="btn btn-success btn-sm">Start Now</a>
+        <Link to={'/problems?cid='+this.props.cid} className="btn btn-success btn-sm">Start Now</Link>
+      </div>
+    );
+  }
+
+  renderLogin(){
+    return(
+      <div>
+        <small>Started on</small>
+        <p>{this.props.startDate}, {this.props.startTime}</p>
+        <button onClick={this.props.login} className="btn btn-success btn-sm">Start Now</button>
       </div>
     );
   }
@@ -34,13 +44,17 @@ class Card extends Component {
   }
 
   render() {
+
+    let user = JSON.parse(sessionStorage.getItem("user"));
+
     return (
       <div className="card mb-4">
         <img className="card-img-top" src={sample} alt="Card"/>
         <div className="card-body">
           <small>{this.props.type}</small>
-          <Link className="link-style" to="/challenge"><h5 >{this.props.name}</h5></Link>
-          {this.props.category === 'live' && this.renderLive()}
+          <Link className="link-style" to={'/challenge?cid='+this.props.cid}><h5 >{this.props.name}</h5></Link>
+          {this.props.category === 'live' && user && this.renderLive()}
+          {this.props.category === 'live' && !user && this.renderLogin()}
           {this.props.category === 'upcoming' && this.renderRegister()}
           {this.props.category === 'previous' && this.renderPrevious()}
         </div>

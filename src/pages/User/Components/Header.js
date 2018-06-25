@@ -18,7 +18,7 @@ class Header extends Component {
 
   openLoginModal(){
     this.setState({
-      showLoginModal: !this.state.showLoginModal,
+      showLoginModal: true,
       showRegisterModal: false,
     });
   }
@@ -59,7 +59,7 @@ class Header extends Component {
             {!userLoggedIn && this.renderLoginButton()}
           </div>
         </nav>
-        <LoginModal show={this.state.showLoginModal} openRegisterModal={this.openRegisterModal} />
+        <LoginModal show={this.state.showLoginModal} openRegisterModal={this.openRegisterModal} changeUserStatus={this.changeUserStatus} />
         <RegisterModal show={this.state.showRegisterModal} changeUserStatus={this.changeUserStatus} />
       </div>
     );

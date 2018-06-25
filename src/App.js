@@ -11,6 +11,7 @@ import ProfilePage from './pages/User/Profile/Profile';
 
 import AdminHomePage from './pages/Admin/Home/Home';
 import NewChallengePage from './pages/Admin/Challenge/NewChallenge';
+import SubmissionsPage from './pages/Admin/Challenge/Submissions';
 
 const App = () => (
   <Router>
@@ -23,7 +24,8 @@ const App = () => (
         <Route path="/profile" component={ProfilePage} />
         
         <Route path="/admin" component={AdminHomePage} />
-        <Route path="/admin/newchallenge" component={NewChallengePage} />
+        <Route path="/newchallenge" component={NewChallengePage} />
+        <Route path="/submissions" component={SubmissionsPage} />
       </div>
   </Router>
   );
