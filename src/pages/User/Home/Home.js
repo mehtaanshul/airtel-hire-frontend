@@ -24,8 +24,6 @@ class Home extends Component {
     fetch(url)
         .then(res => res.json())
         .then((result) => {
-          //console.log("result");
-          //console.log(result);
           this.setState({
             challenges:result,
             loading:false,

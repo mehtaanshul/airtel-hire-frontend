@@ -12,7 +12,10 @@ class Problem extends Component {
 
       },
       loading:true,
+      file:null,
     };
+    this.onFileChange = this.onFileChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +37,35 @@ class Problem extends Component {
         }, (error) => {
             console.log(error);
     });
+  }
+
+  onFileChange(e) {
+    this.setState({file:e.target.files[0]})
+  }
+
+  onSubmit(){
+
+    let url = 'http://192.168.1.26:8080/upload';
+
+    const formData = new FormData();
+    formData.append('file',this.state.file);
+
+    fetch(url,{
+         method: 'post',
+         headers: {
+          /*"Accept": "application/json",
+          "Content-Type": "application/json"*/
+          'Content-Type': 'multipart/form-data'
+         },
+         body: formData,
+        });
+        /*.then((res)=>res.json())
+        .then((res)=>{
+          console.log(res);
+        }, (error)=>{
+            console.log(error);
+        });*/
+
   }
 
   render() {
@@ -71,9 +103,9 @@ class Problem extends Component {
               <form>
                 <div className="form-group text-left">
                   <label>Upload Solution</label>
-                  <input type="file" class="form-control-file"/>
+                  <input type="file" onChange={this.onFileChange} class="form-control-file"/>
                 </div>
-                <button type="button" class="btn btn-success float-left">Submit</button>
+                <button type="button" onClick={this.onSubmit} class="btn btn-success float-left">Submit</button>
               </form>
             </div>
             
