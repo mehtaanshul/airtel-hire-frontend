@@ -12,7 +12,10 @@ import OnlineTestPage from './pages/User/OnlineTest/OnlineTest';
 
 import AdminHomePage from './pages/Admin/Home/Home';
 import NewChallengePage from './pages/Admin/Challenge/NewChallenge';
+import NewProblemPage from './pages/Admin/Challenge/NewProblem';
 import SubmissionsPage from './pages/Admin/Challenge/Submissions';
+import AdminLeaderBoardPage from './pages/Admin/Challenge/Leaderboard';
+import AdminLoginPage from './pages/Admin/Login/Login';
 
 const App = () => (
   <Router>
@@ -25,9 +28,12 @@ const App = () => (
         <Route path="/profile" component={ProfilePage} />
         <Route path="/onlinetest" component={OnlineTestPage} />
         
-        <Route path="/admin" component={AdminHomePage} />
+        <Route exact path="/admin" component={AdminHomePage} />
         <Route path="/newchallenge" component={NewChallengePage} />
+        <Route path="/admin/login" component={AdminLoginPage} />
+        <Route path="/newproblem" component={NewProblemPage} />
         <Route path="/submissions" component={SubmissionsPage} />
+        <Route path="/admin/leaderboard" component={AdminLeaderBoardPage} />
       </div>
   </Router>
   );

@@ -5,6 +5,7 @@ class RatingModal extends Component {
     super(props);
     this.state = {
       showModal:this.props.show,
+      score:'',
     };
     this.closeModal = this.closeModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -31,41 +32,35 @@ class RatingModal extends Component {
 
   onSubmit(){
 
-    let url = 'http://192.168.1.26:8080/login' ;
+    let url = 'http://192.168.1.26:8080/scores/'+this.props.userId;
+
+    console.log("user id",this.props.userId);
+    console.log("P id",this.props.problemId);
+    console.log("C id",this.props.challengeId);
 
     fetch(url,{
-         method: 'post',
-         headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-         },
-         body: JSON.stringify({
-          "emailid": this.state.emailid,
-          "password": this.state.password,
-         })
-        })
-        .then((res)=>res.json())
-        .then((res)=>{
-          if(res['status']==='success'){
-            let user = {
-              uid: res['id'],
-            }
-            sessionStorage.setItem("user",JSON.stringify(user));
-            //this.props.changeUserStatus();
-            window.location.reload();
-            this.setState({
-              showModal:false,
-            });
-          }
-          else {
-            this.setState({
-              loginerror:'Invalid email or wrong password.'
-            })
-          }
-        }, (error)=>{
-            console.log(error);
+     method: 'post',
+     headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+     },
+     body: JSON.stringify({
+      cid:this.props.challengeId,
+      pid:this.props.problemId,
+      score:this.state.score
+     })
+    })
+    .then((res)=>res.json())
+    .then((res)=>{
+      if(res["status"] === "success"){
+        this.setState({
+          showModal:false,
         });
-
+        window.location.reload();
+      }
+    }, (error)=>{
+        console.log(error);
+    });
   }
 
   renderModal(){

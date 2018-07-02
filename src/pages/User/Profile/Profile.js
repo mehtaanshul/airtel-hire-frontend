@@ -69,7 +69,6 @@ class Problem extends Component {
         }, (error)=>{
             console.log(error);
         });
-
   }
 
   render() {

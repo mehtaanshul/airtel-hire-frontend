@@ -60,7 +60,7 @@ class Problems extends Component {
             <small className="text-secondary">Apr 15, 2018, 09:00 AM IST - Jun 14, 2018, 11:55 PM IST</small>
           </div>
           <div className="col-lg-8">
-            <a href="/leaderboard"className="btn btn-info float-right mb-1">Leaderboard</a>
+            <a href={'/leaderboard?cid='+this.state.cid}className="btn btn-info float-right mb-1">Leaderboard</a>
             <Link to={'/challenge?cid='+this.state.cid} className="btn btn-info float-right mb-1 mr-2">About Challenge</Link>
             <h4 className="text-left">Problems</h4>
             <div className="list-group text-left w-100 problems-list">

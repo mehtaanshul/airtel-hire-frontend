@@ -104,6 +104,35 @@
   margin-left: 2px;
 }
 
+.admin-login-page{
+  background-color: #e9e7f9;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.admin-login-page .admin-login-button {
+  background-color: #e40001;
+  border-color: #e40001;
+  margin-bottom: 48px;
+}
+.admin-login-page .admin-login {
+  border-radius: 12px;
+  background-color: white;
+}
+.admin-login-page .admin-login-heading {
+  background-color: #e40001;
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  height: 80px;
+  margin-bottom: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media only screen and (max-width: 767px) {
   .login-form{
     left: 10%;

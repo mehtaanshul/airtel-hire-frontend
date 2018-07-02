@@ -8,7 +8,14 @@ class Card extends Component {
       <div>
         <small>Started on</small>
         <p>{this.props.startDate}, {this.props.startTime}</p>
-        <a href="/problems" className="btn btn-success btn-sm">Start Now</a>
+        <div className="row">
+          <div className="col-md-6">
+            <a href={'/submissions?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Submissions</a>
+          </div>
+          <div className="col-md-6">
+            <a href={'/admin/leaderboard?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Leaderboard</a>
+          </div>
+        </div>
       </div>
     );
   }
@@ -18,7 +25,7 @@ class Card extends Component {
       <div>
         <small>Starts on</small>
         <p>{this.props.startDate}, {this.props.startTime}</p>
-        <button className="btn btn-outline-info btn-sm" disabled>Upcoming</button>
+        <a href="/" className="btn btn-outline-info btn-sm" disabled>Upcoming</a>
       </div>
     );
   }
@@ -26,9 +33,16 @@ class Card extends Component {
   renderPrevious(){
     return(
       <div>
-      <small>Ended on</small>
-      <p>{this.props.endDate}, {this.props.endTime}</p>
-      <button href="#" className="btn btn-secondary btn-sm" disabled>Ended</button>
+        <small>Ended on</small>
+        <p>{this.props.endDate}, {this.props.endTime}</p>
+        <div className="row">
+          <div className="col-md-6">
+            <a href={'/submissions?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Submissions</a>
+          </div>
+          <div className="col-md-6">
+            <a href={'/admin/leaderboard?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Leaderboard</a>
+          </div>
+        </div>
       </div>
     );
   }
@@ -39,7 +53,7 @@ class Card extends Component {
         <img className="card-img-top" src={sample} alt=""/>
         <div className="card-body">
           <small>{this.props.type}</small>
-          <Link className="link-style" to="/challenge"><h5 >{this.props.name}</h5></Link>
+          <Link className="link-style" to={'/challenge?cid='+this.props.cid}><h5 >{this.props.name}</h5></Link>
           {this.props.category === 'live' && this.renderLive()}
           {this.props.category === 'upcoming' && this.renderRegister()}
           {this.props.category === 'previous' && this.renderPrevious()}

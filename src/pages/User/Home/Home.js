@@ -128,7 +128,7 @@ class Home extends Component {
     let filteredChallenges = this.state.challenges.filter(
       (challenge) => {
           if (this.state.challengesCategory == 'all') {
-            return challenge;
+            return true;
           } 
           else {
             return challenge.category.toLowerCase().indexOf(

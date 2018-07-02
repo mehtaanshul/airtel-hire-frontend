@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 
-class Leaderboard extends Component {
+class AdminLeaderboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       leaderboard:[],
-      userid:null,
     };
   }
   
@@ -16,7 +15,6 @@ class Leaderboard extends Component {
     const type = params.get('type');
     const cid = params.get('cid');
 
-    let user = JSON.parse(sessionStorage.getItem('user'));
     let furl = 'http://192.168.1.26:8080/score/'+cid;
     fetch(furl)
         .then(res => res.json())
@@ -24,7 +22,6 @@ class Leaderboard extends Component {
           console.log(result);
           this.setState({
             leaderboard:result,
-            userid:user["uid"]
           });
         }, (error) => {
             console.log(error);
@@ -50,23 +47,13 @@ class Leaderboard extends Component {
                 <small className="float-right"><strong>SCORE</strong></small>
               </div>
               {this.state.leaderboard.map((user,index)=>{
-              if(user.uid===this.state.userid){
-                return(
-                  <a href="#" className="list-group-item list-group-item-action text-left bg-light">
-                    {index+1}.&nbsp; <strong>{user.uname}</strong>
-                    <div className="float-right">{user.score}</div>
-                  </a>
-                );
-              }})}
-              {this.state.leaderboard.map((user,index)=>{
-              if(user.uid!=this.state.userid){
                 return(
                   <a href="#" className="list-group-item list-group-item-action text-left">
                     {index+1}.&nbsp; <strong>{user.uname}</strong>
                     <div className="float-right">{user.score}</div>
                   </a>
                 );
-              }})}
+              })}
             </div>
           </div>
         </div>
@@ -75,4 +62,4 @@ class Leaderboard extends Component {
   }
 }
 
-export default Leaderboard;
+export default AdminLeaderboard;

@@ -14,11 +14,11 @@ class Header extends Component {
     return (
       <div>
         <nav className="navbar navbar-expand-lg navbar-light fixed-top bg-white border-bottom border border-light">
-          <a className="navbar-brand" href="/">
+          <a className="navbar-brand" href="/admin">
               <img src={logo} height="30" alt="abc"/>
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
 
           <div className="collapse navbar-collapse">
@@ -30,7 +30,7 @@ class Header extends Component {
                 <a className="nav-link" href="/newchallenge">New challenge</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/submissions">Submissions</a>
+                <a className="nav-link" href="/newproblem">New Problem</a>
               </li>
             </ul>
           </div>

@@ -3,6 +3,8 @@ import Header from '../Components/Header';
 import Card from '../Components/Card';
 import sample from '../../../img/sample.png';
 import { Link } from "react-router-dom";
+import { Redirect } from 'react-router';
+
 
 class Home extends Component {
   constructor(props) {
@@ -24,8 +26,7 @@ class Home extends Component {
     fetch(url)
         .then(res => res.json())
         .then((result) => {
-          //console.log("result");
-          //console.log(result);
+          console.log(result);
           this.setState({
             challenges:result,
           });
@@ -35,6 +36,10 @@ class Home extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login' />
+    }
     
     let filteredChallenges = this.state.challenges.filter(
       (challenge) => {
@@ -51,6 +56,7 @@ class Home extends Component {
       <div className="col-lg-3">
         <Card
         name={challenge.cname}
+        cid={challenge.cid}
         type={challenge.type}
         category={challenge.category}
         startTime={challenge.startTime}

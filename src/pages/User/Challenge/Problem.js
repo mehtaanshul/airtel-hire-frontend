@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
-import ThankYou from '../Components/ThankYou';
 import { Link } from "react-router-dom";
 import loader from '../../../img/loader.svg';
 
@@ -13,18 +12,23 @@ class Problem extends Component {
       },
       loading:true,
       file:null,
+      submitStatus:0,
     };
     this.onFileChange = this.onFileChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
+    
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
     const type = params.get('type');
     const pid = params.get('pid');
 
     let fetchurl = 'http://192.168.1.26:8080/problem/'+pid;
+    let furl = 'http://192.168.1.26:8080/checksubmissionstatus';
+
+    let user = JSON.parse(sessionStorage.getItem("user"));
     
     fetch(fetchurl)
         .then(res => res.json())
@@ -37,6 +41,32 @@ class Problem extends Component {
         }, (error) => {
             console.log(error);
     });
+
+    fetch(furl,{
+         method: 'post',
+         headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+         },
+         body: JSON.stringify({
+          id:user["uid"], 
+          pid:pid
+         })
+        })
+        .then((res)=>res.json())
+        .then((res)=>{
+          if(res["status"]==="success"){
+            //console.log("get status");
+            this.setState({
+              submitStatus:2,
+            });
+          }
+        }, (error)=>{
+            console.log(error);
+        });
+
+
+
   }
 
   onFileChange(e) {
@@ -45,30 +75,58 @@ class Problem extends Component {
 
   onSubmit(){
 
-    let url = 'http://192.168.1.26:8080/upload';
+    this.setState({
+      submitStatus:1
+    })
+
+    let furl = 'http://192.168.1.26:8080/submission';
+
+    let user = JSON.parse(sessionStorage.getItem("user"));
+
+    const url = new URL(document.URL);
+    const params = new URLSearchParams(url.search.slice(1));
+    const type = params.get('type');
+    const pid = params.get('pid');
 
     const formData = new FormData();
     formData.append('file',this.state.file);
+    formData.append('id',user["uid"]);
+    formData.append('pid',pid);
+    //console.log("Uploading file");
 
-    fetch(url,{
+    fetch(furl,{
          method: 'post',
-         headers: {
-          /*"Accept": "application/json",
-          "Content-Type": "application/json"*/
-          'Content-Type': 'multipart/form-data'
-         },
          body: formData,
-        });
-        /*.then((res)=>res.json())
+        })
+        .then((res)=>res.json())
         .then((res)=>{
-          console.log(res);
+          if(res["status"]==="success"){
+            console.log("Submiited");
+            this.setState({
+              submitStatus:2,
+            });
+          }
         }, (error)=>{
             console.log(error);
-        });*/
+        });
 
   }
 
+  renderUpload(){
+    return(
+      <div className="form-group text-left">
+        <label>Upload Solution</label>
+        <input type="file" onChange={this.onFileChange} className="form-control-file"/>
+      </div>
+    );
+  }
+
   render() {
+
+    const url = new URL(document.URL);
+    const params = new URLSearchParams(url.search.slice(1));
+    const type = params.get('type');
+    const pid = params.get('pid');
     
     if(this.state.loading){
       return (
@@ -90,7 +148,7 @@ class Problem extends Component {
           </div>
           <div className="row p-4">
             <div className="col-lg-8">
-              <a href="/leaderboard" class="btn btn-info float-right mb-1">Leaderboard</a>
+             {/* <a href={"/leaderboard?pid="+pid} class="btn btn-info float-right mb-1">Leaderboard</a>*/}
               <Link to={'/problems?cid='+this.state.problem.cid} className="btn btn-info float-right mr-2">All Problems</Link>
               <h4 className="text-left problem-title">{this.state.problem.probname}</h4>
               <hr/>
@@ -101,16 +159,17 @@ class Problem extends Component {
             </div>
             <div className="col-lg-4">
               <form>
-                <div className="form-group text-left">
-                  <label>Upload Solution</label>
-                  <input type="file" onChange={this.onFileChange} class="form-control-file"/>
-                </div>
-                <button type="button" onClick={this.onSubmit} class="btn btn-success float-left">Submit</button>
+                {this.state.submitStatus === 0 && this.renderUpload()}
+                <button type="button" onClick={this.onSubmit} 
+                  disabled={this.state.submitStatus ? "disabled" : ""}
+                  className={this.state.submitStatus ? "btn btn-secondary float-left" : "btn btn-success float-left"}>
+                  {!this.state.submitStatus ? "Submit" : ""}
+                  {this.state.submitStatus === 1 ? "Submitting..." : ""}
+                  {this.state.submitStatus === 2 ? "Submitted" : ""}
+                </button>
               </form>
             </div>
-            
           </div>
-          <ThankYou show={false}/>
         </div>
       );
     }

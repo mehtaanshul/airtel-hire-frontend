@@ -1,0 +1,159 @@
+import React, { Component } from 'react';
+import Header from '../Components/Header';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+class NewProblem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      aboutProblem: '',
+      problemName:'',
+      cid:'',
+      showAlert:false,
+      submitting:false,
+      challenges:[],
+      challengeId:'Select challenge to add a problem'
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.hideAlert = this.hideAlert.bind(this);
+    this.handleAboutProblemChange = this.handleAboutProblemChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    let url = 'http://192.168.1.26:8080/challenges';
+    fetch(url)
+        .then(res => res.json())
+        .then((result) => {
+          this.setState({
+            challenges:result,
+          });
+        }, (error) => {
+            console.log(error);
+    });
+  }
+
+  handleAboutProblemChange(value) {
+    this.setState({ aboutProblem: value })
+  }
+
+  handleChange(e){
+    console.log(e.target);
+    this.state[e.target.name] = e.target.value;
+    this.setState(this.state);
+    console.log(this.state.challengeId);
+  }
+  hideAlert(){
+    this.setState({showAlert:false});
+  }
+
+  renderAlert(){
+    return(
+      <div class="alert alert-primary mt-4" role="alert">
+        <button onClick={this.hideAlert} type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        Problem added successfully!
+      </div>
+    );
+  }
+
+  onSubmit(){
+
+    this.setState({
+      submitting:true
+    });
+
+    let url = 'http://192.168.1.26:8080/problems';
+
+    fetch(url,{
+         method: 'post',
+         headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+         },
+         body: JSON.stringify({
+          probdetails: this.state.aboutProblem,
+          probname:this.state.problemName,
+          owner:'',
+          cid:this.state.challengeId,
+         })
+        })
+        .then((res)=>res.json())
+        .then((res)=>{
+          if(res["status"] === "success"){
+            this.setState({
+              submitting:false,
+              aboutProblem: '',
+              problemName:'',
+              cid:'',
+              showAlert:true,
+            })
+          }
+        }, (error)=>{
+            console.log(error);
+        });
+}
+
+  render() {
+
+    var toolbarOptions = [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['blockquote', 'code-block'],
+
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+
+      ['clean']                                         // remove formatting button
+    ];
+
+    var modules = {
+      toolbar: toolbarOptions
+    };
+
+    return (
+      <div className="complete-body">
+        <Header />
+        <div className="container">
+          {this.state.showAlert && this.renderAlert()}
+          <h4 className="mt-4 text-left">Add a new problem</h4>
+          <hr/>
+          <div className="col-md-6 mt-4 mb-4">
+            <select value={this.state.challengeId} name="challengeId" onChange={this.handleChange} className="custom-select">
+              <option defaultValue>Select challenge to add a problem</option>
+              {this.state.challenges.map((challenge,index)=>(
+                <option key={"opt-"+index} value={challenge.cid}>{challenge.cname}</option>
+                ))}
+            </select>
+          </div>
+          <div className="col-md-5">
+            <label className="label-text float-left">Problem Name</label>
+            <input type="text" placeholder="Name" name="problemName" value={this.state.problemName} onChange={this.handleChange} className="form-control form-input"/>
+            <label className="label-text float-left mt-4">About problem</label>
+            <br/>
+            <br/>
+          </div>
+          <div className="form-group ml-3">
+              <ReactQuill theme="snow" modules={modules} value={this.state.aboutProblem} name="aboutProblem" onChange={this.handleAboutProblemChange} />
+          </div>
+          <div className="col-md-2">
+            <button type="button" onClick={this.onSubmit} className="btn btn-primary btn-block">{this.state.submitting ? "Adding..." : "Add a problem"}</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default NewProblem;
