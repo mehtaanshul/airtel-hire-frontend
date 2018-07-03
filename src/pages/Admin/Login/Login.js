@@ -9,12 +9,22 @@ class Login extends Component {
       email:'',
       password:'',
       error:'',
+      formErrors:{
+
+      },
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(){
+  onSubmit(e){
+
+    this.validateForm();
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      e.preventDefault();
+      return;
+    }
 
 
     let url = 'http://192.168.1.26:8080/adminlogin';
@@ -53,6 +63,48 @@ class Login extends Component {
     this.setState(this.state);
   }
 
+  validateForm(){
+
+    let requiredCheckFields = ["email", "password"];
+
+    let field;
+
+    for(let i=0;i<requiredCheckFields.length; i++){
+
+      field = requiredCheckFields[i];
+
+      if(this.state[field].trim().length === 0){
+        this.state.formErrors[field] = 'Please enter ' + field;
+        }else{
+        delete this.state.formErrors[field];
+      }
+    }
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      this.setState(this.state);
+      return;
+    }
+
+    if(!this.validateEmail(this.state['email'])){
+      this.state.formErrors['email'] = 'Invalid email';
+    }else{
+      delete this.state.formErrors['email'];
+    }
+
+    if(this.state['password'].trim().length < 8){
+      this.state.formErrors['password'] = 'Password length should be greater than 8';
+    }else{
+      delete this.state.formErrors['password'];
+    }
+
+    this.setState(this.state);
+
+  }
+
+   validateEmail(mail){
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail);
+  }
+
   render() {
 
     return (
@@ -65,11 +117,13 @@ class Login extends Component {
               <div className="row">
                 <div class="form-group offset-md-2 col-md-8 mt-2">
                   <input type="email" name="email" value={this.state.email} onChange={this.handleChange} class="form-control" placeholder="Email"/>
+                   <small>{this.state.formErrors['email']}</small>
                 </div>
               </div>
               <div className="row">
                 <div class="form-group offset-md-2 col-md-8 mt-2">
                   <input type="password" name="password" value={this.state.password} onChange={this.handleChange} class="form-control" placeholder="Password"/>
+                   <small>{this.state.formErrors['password']}</small>
                 </div>
               </div>
               <div className="row">

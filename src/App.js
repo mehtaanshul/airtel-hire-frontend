@@ -29,10 +29,10 @@ const App = () => (
         <Route path="/onlinetest" component={OnlineTestPage} />
         
         <Route exact path="/admin" component={AdminHomePage} />
-        <Route path="/newchallenge" component={NewChallengePage} />
+        <Route path="/admin/newchallenge" component={NewChallengePage} />
         <Route path="/admin/login" component={AdminLoginPage} />
-        <Route path="/newproblem" component={NewProblemPage} />
-        <Route path="/submissions" component={SubmissionsPage} />
+        <Route path="/admin/newproblem" component={NewProblemPage} />
+        <Route path="/admin/submissions" component={SubmissionsPage} />
         <Route path="/admin/leaderboard" component={AdminLeaderBoardPage} />
       </div>
   </Router>

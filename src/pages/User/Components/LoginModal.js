@@ -8,6 +8,9 @@ class LoginModal extends Component {
       emailid:'',
       password:'',
       loginerror:'',
+      formErrors:{
+
+      },
     };
     this.closeModal = this.closeModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,7 +38,14 @@ class LoginModal extends Component {
     this.props.openRegisterModal();
   }
 
-  onSubmit(){
+  onSubmit(e){
+
+    this.validateForm();
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      e.preventDefault();
+      return;
+    }
 
     let url = 'http://192.168.1.26:8080/login' ;
 
@@ -74,6 +84,48 @@ class LoginModal extends Component {
 
   }
 
+  validateForm(){
+
+    let requiredCheckFields = ["emailid", "password"];
+
+    let field;
+
+    for(let i=0;i<requiredCheckFields.length; i++){
+
+      field = requiredCheckFields[i];
+
+      if(this.state[field].trim().length === 0){
+        this.state.formErrors[field] = 'Please enter ' + field;
+        }else{
+        delete this.state.formErrors[field];
+      }
+    }
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      this.setState(this.state);
+      return;
+    }
+
+    if(!this.validateEmail(this.state['emailid'])){
+      this.state.formErrors['emailid'] = 'Invalid email';
+    }else{
+      delete this.state.formErrors['emailid'];
+    }
+
+    if(this.state['password'].trim().length < 8){
+      this.state.formErrors['password'] = 'Password length should be greater than 8';
+    }else{
+      delete this.state.formErrors['password'];
+    }
+
+    this.setState(this.state);
+
+  }
+
+   validateEmail(mail){
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail);
+  }
+
   renderModal(){
     return (
       <div>
@@ -88,12 +140,14 @@ class LoginModal extends Component {
               <div className="offset-md-1 col-md-10">
                 <label className="float-left label-text">Email Address</label>
                 <input type="email" name="emailid" onChange={this.handleChange} value={this.state.email} className="form-control form-input" placeholder="Enter email"/>
+                <small>{this.state.formErrors['emailid']}</small>
               </div>
             </div>
             <div className="form-group">
               <div className="offset-md-1 col-md-10">
                 <label className="float-left label-text">Password</label>
                 <input type="text" name="password" onChange={this.handleChange} value={this.state.password} className="form-control form-input" placeholder="Password" />
+                <small>{this.state.formErrors['password']}</small>
               </div>
             </div>
             <div className="offset-md-1 col-md-10">

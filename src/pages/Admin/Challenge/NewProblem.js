@@ -13,7 +13,10 @@ class NewProblem extends Component {
       showAlert:false,
       submitting:false,
       challenges:[],
-      challengeId:'Select challenge to add a problem'
+      challengeId:'',
+      formErrors:{
+
+      },
     };
     this.handleChange = this.handleChange.bind(this);
     this.hideAlert = this.hideAlert.bind(this);
@@ -59,7 +62,14 @@ class NewProblem extends Component {
     );
   }
 
-  onSubmit(){
+  onSubmit(e){
+
+    this.validateForm();
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      e.preventDefault();
+      return;
+    }
 
     this.setState({
       submitting:true
@@ -95,6 +105,31 @@ class NewProblem extends Component {
             console.log(error);
         });
 }
+
+  validateForm(){
+
+    let requiredCheckFields = ["challengeId", "aboutProblem","problemName"];
+
+    let field;
+
+    for(let i=0;i<requiredCheckFields.length; i++){
+
+      field = requiredCheckFields[i];
+
+      if(this.state[field].trim().length === 0){
+        this.state.formErrors[field] = true;
+      }
+      else {
+        delete this.state.formErrors[field];
+      }
+    }
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      this.setState(this.state);
+      return;
+    }
+
+  }
 
   render() {
 
@@ -136,16 +171,19 @@ class NewProblem extends Component {
                 <option key={"opt-"+index} value={challenge.cid}>{challenge.cname}</option>
                 ))}
             </select>
+            <small>{this.state.formErrors['challengeId'] && "Please select a challenge"}</small>
           </div>
           <div className="col-md-5">
             <label className="label-text float-left">Problem Name</label>
             <input type="text" placeholder="Name" name="problemName" value={this.state.problemName} onChange={this.handleChange} className="form-control form-input"/>
+            <small>{this.state.formErrors['problemName'] && "Please enter problem name"}</small>
             <label className="label-text float-left mt-4">About problem</label>
             <br/>
             <br/>
           </div>
           <div className="form-group ml-3">
               <ReactQuill theme="snow" modules={modules} value={this.state.aboutProblem} name="aboutProblem" onChange={this.handleAboutProblemChange} />
+              <small>{this.state.formErrors['aboutProblem'] && "Please enter problem details"}</small>
           </div>
           <div className="col-md-2">
             <button type="button" onClick={this.onSubmit} className="btn btn-primary btn-block">{this.state.submitting ? "Adding..." : "Add a problem"}</button>
