@@ -82,9 +82,59 @@
   width:30% ;
   border-radius: 4px;
 }
-.mcq-checkbox{
+
+.questionnaire-button{
+  margin-bottom: 96px;
+  margin-top: 48px;
+}
+.mcq {
+  margin-bottom: 48px;
+}
+
+.option-selected{
+  background-color: #138496;
+  color: white;
+  border-left-color: white;
+}
+
+
+.option-selected:hover{
+  background-color: #138496;
+  color: white;
+  border-left-color: white;
+}
+
+.option-selected:focus {
+  box-shadow: 0 0 0 0rem;
+}
+
+.mcq-prepend-label{
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px ;
+}
+
+.mcq-label-not-selected {
   background-color: #17a2b8;
   color: white;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px ;
+  padding-top: 6px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.mcq-label-selected {
+  background-color: #138496;
+  color: white;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px ;
+  padding-top: 6px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.true-false{
+  margin-top: 48px;
 }
 
 .loader-svg{

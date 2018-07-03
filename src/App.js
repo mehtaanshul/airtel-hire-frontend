@@ -8,7 +8,7 @@ import ProblemsPage from './pages/User/Challenge/Problems';
 import ProblemPage from './pages/User/Challenge/Problem';
 import LeaderboardPage from './pages/User/Challenge/Leaderboard';
 import ProfilePage from './pages/User/Profile/Profile';
-import OnlineTestPage from './pages/User/OnlineTest/OnlineTest';
+import QuestionnairePage from './pages/User/Questionnaire/Questionnaire';
 
 import AdminHomePage from './pages/Admin/Home/Home';
 import NewChallengePage from './pages/Admin/Challenge/NewChallenge';
@@ -26,7 +26,7 @@ const App = () => (
         <Route path="/problem" component={ProblemPage} />
         <Route path="/leaderboard" component={LeaderboardPage} />
         <Route path="/profile" component={ProfilePage} />
-        <Route path="/onlinetest" component={OnlineTestPage} />
+        <Route path="/questionnaire" component={QuestionnairePage} />
         
         <Route exact path="/admin" component={AdminHomePage} />
         <Route path="/admin/newchallenge" component={NewChallengePage} />
