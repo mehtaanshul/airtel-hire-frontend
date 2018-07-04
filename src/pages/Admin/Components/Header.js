@@ -27,10 +27,10 @@ class Header extends Component {
                 <a className="nav-link" href="/admin">All challenges</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/newchallenge">New challenge</a>
+                <a className="nav-link" href="/admin/newchallenge">New challenge</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/newproblem">New Problem</a>
+                <a className="nav-link" href="/admin/newproblem">New Problem</a>
               </li>
             </ul>
           </div>

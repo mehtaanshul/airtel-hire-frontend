@@ -23,6 +23,7 @@ class NewChallenge extends Component {
       faqs:'',
       type:'',
       showAlert:false,
+      banner:null,
       formErrors:{
 
       },
@@ -34,6 +35,7 @@ class NewChallenge extends Component {
     this.handlePrizesChange = this.handlePrizesChange.bind(this);
     this.handleFaqsChange = this.handleFaqsChange.bind(this);
     this.handleGuidelinesChange = this.handleGuidelinesChange.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
   }
 
   handleAboutChallengeChange(value) {
@@ -83,44 +85,44 @@ class NewChallenge extends Component {
 
     let url = 'http://192.168.1.26:8080/challenges';
 
+    const formData = new FormData();
+    formData.append('banner',this.state.banner);
+    formData.append('aboutChallenge',this.state.aboutChallenge);
+    formData.append('cname',this.state.challengeName);
+    formData.append('startDate',this.state.startDate);
+    formData.append('startTime',this.state.startTime);
+    formData.append('endDate',this.state.endDate);
+    formData.append('endTime',this.state.endTime);
+    formData.append('guidelines',this.state.guidelines);
+    formData.append('faqs',this.state.faqs);
+    formData.append('prizes',this.state.prizes);
+    formData.append('type',this.state.type);
+
     fetch(url,{
          method: 'post',
-         headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-         },
-         body: JSON.stringify({
-          aboutChallenge: this.state.aboutChallenge,
-          cname:this.state.challengeName,
-          startDate:this.state.startDate,
-          startTime:this.state.startTime,
-          endDate:this.state.endDate,
-          endTime:this.state.endTime,
-          guidelines:this.state.guidelines,
-          prizes:this.state.prizes,
-          faqs:this.state.faqs,
-          type:this.state.type,
-         })
+         body: formData,
         })
         .then((res)=>res.json())
         .then((res)=>{
-          if(res["status"] === "success"){
+          if(res["status"]==="success"){
+            window.scroll(0,0);
+            console.log("Challenge Added");
             this.setState({
-              showAlert:true,
-              submitting:false,
-              aboutChallenge: '',
-              challengeName:'',
-              startDate:'',
-              startDateTemp:'',
-              startTime:'',
-              endDate:'',
-              endDateTemp:'',
-              endTime:'',
-              guidelines:'',
-              prizes:'',
-              faqs:'',
-              type:'',
-            })
+                showAlert:true,
+                submitting:false,
+                aboutChallenge: '',
+                challengeName:'',
+                startDate:'',
+                startDateTemp:'',
+                startTime:'',
+                endDate:'',
+                endDateTemp:'',
+                endTime:'',
+                guidelines:'',
+                prizes:'',
+                faqs:'',
+                type:'',
+              })
           }
         }, (error)=>{
             console.log(error);
@@ -145,6 +147,10 @@ validateForm(){
       }
     }
 
+    if(this.state.banner === null){
+      this.state.formErrors["banner"] = "Please upload challenge banner";
+    }
+
     if(Object.keys(this.state.formErrors).length > 0){
       this.setState(this.state);
       return;
@@ -154,13 +160,17 @@ validateForm(){
 
   renderAlert(){
     return(
-      <div class="alert alert-primary mt-4" role="alert">
-        <button onClick={this.hideAlert} type="button" class="close" aria-label="Close">
+      <div className="alert alert-primary mt-4" role="alert">
+        <button onClick={this.hideAlert} type="button" className="close" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         Challenge added successfully! Now Click on new problem to add problems to this challenge.
       </div>
     );
+  }
+
+  onFileChange(e) {
+    this.setState({banner:e.target.files[0]})
   }
 
 
@@ -230,15 +240,12 @@ validateForm(){
                 <small>{this.state.formErrors['endTime'] && "Please enter end time"}</small>
               </div>
             </div>
-            <div className="row">
-              <div className="col-md-8">
-                <div className="custom-file mt-4">
-                  <input type="file" className="custom-file-input"/>
-                  <label className="custom-file-label">Choose file</label>
-                </div>
-              </div>
-              <div className="col-md-4">
-                <button type="button" className="btn btn-info btn-block mt-4">Upload</button>
+
+            <div className="mt-4">
+              <div className="form-group text-left">
+                <label>Upload Challenge Banner</label>
+                <input type="file" onChange={this.onFileChange} className="form-control-file"/>
+                <small>{this.state.formErrors['banner']}</small>
               </div>
             </div>
 

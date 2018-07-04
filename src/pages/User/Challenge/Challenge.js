@@ -27,13 +27,23 @@ class Challenge extends Component {
         .then(res => res.json())
         .then((result) => {
           console.log(result);
-          this.setState({
+          console.log("result fetch");
+          this.setState({ 
             challengeDetails:result,
             loading:false,
           });
         }, (error) => {
             console.log(error);
     });
+  }
+
+  componentDidUpdate(){
+    if(!this.state.loading){
+    document.getElementById('aboutChallenge').innerHTML = this.state.challengeDetails.aboutChallenge;
+    document.getElementById('guidelines').innerHTML = this.state.challengeDetails.guidelines;
+    document.getElementById('faqs').innerHTML = this.state.challengeDetails.aboutChallenge;
+    document.getElementById('prizes').innerHTML = this.state.challengeDetails.prizes;
+    }
   }
 
   renderLive(){
@@ -61,6 +71,7 @@ class Challenge extends Component {
   }
 
   renderPrevious(){
+
     return(
       <div className="col-lg-3 float-right">
         <button href="#" className="btn btn-secondary btn-block" disabled>Ended</button>
@@ -70,6 +81,8 @@ class Challenge extends Component {
 
   render() {
 
+    console.log("render");
+    
     let user = JSON.parse(sessionStorage.getItem("user"));
 
     if(this.state.loading){
@@ -86,7 +99,7 @@ class Challenge extends Component {
       return (
         <div className="complete-body">
           <Header ref={instance => { this.child = instance; }} />
-          <img src={sample} className="w-100" alt=""/>
+          <img src={'http://192.168.1.26:8080/img/'+this.state.challengeDetails.cid} className="w-100" alt=""/>
           <div className="jumbotron text-left">
           {this.state.challengeDetails.category == 'live' && user && this.renderLive()}
           {this.state.challengeDetails.category == 'live' && !user && this.renderLogin()}
@@ -94,16 +107,16 @@ class Challenge extends Component {
           {this.state.challengeDetails.category == 'previous' && this.renderPrevious()}
             <div className="col-lg-8">
               <h5>About the Challenge</h5>
-              {this.state.challengeDetails.aboutChallenge}
+              <div id="aboutChallenge"></div>
               <hr/>
               <h5>Guidelines</h5>
-              {this.state.challengeDetails.guidelines}
+              <div id="guidelines"></div>
               <hr/>
               <h5>Prizes</h5>
-              {this.state.challengeDetails.prizes}
+              <div id="prizes"></div>
               <hr/>
               <h5>FAQs</h5>
-              {this.state.challengeDetails.faqs}
+              <div id="faqs"></div>
               <hr/>
             </div>
           </div>  

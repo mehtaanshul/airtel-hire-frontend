@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-class RatingModal extends Component {
+class QuestionCount extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal:this.props.show,
-      score:'',
+      questionCount:'',
       formErrors:{
 
       },
@@ -41,41 +41,17 @@ class RatingModal extends Component {
       e.preventDefault();
       return;
     }
-
-    let url = 'http://192.168.1.26:8080/scores/'+this.props.userId;
-
-    fetch(url,{
-     method: 'post',
-     headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json"
-     },
-     body: JSON.stringify({
-      cid:this.props.challengeId,
-      pid:this.props.problemId,
-      score:this.state.score
-     })
-    })
-    .then((res)=>res.json())
-    .then((res)=>{
-      if(res["status"] === "success"){
-        this.setState({
-          showModal:false,
-        });
-        this.props.onModalClose();
-      }
-    }, (error)=>{
-        console.log(error);
-    });
+    this.props.onModalClose(this.state.questionCount);
   }
+
 
   validateForm(){
 
-    if(this.state["score"].trim().length === 0){
-      this.state.formErrors["score"] = true;
+    if(this.state["questionCount"].trim().length === 0){
+      this.state.formErrors["questionCount"] = true;
     }
     else {
-      delete this.state.formErrors["score"];
+      delete this.state.formErrors["questionCount"];
     }
     
     if(Object.keys(this.state.formErrors).length > 0){
@@ -96,13 +72,13 @@ class RatingModal extends Component {
           </button>
           <div className="form-group mt-4">
             <div className="offset-md-1 col-md-10">
-              <label className="float-left label-text">Score</label>
-              <input type="number" name="score" onChange={this.handleChange} value={this.state.score} className="form-control form-input" placeholder="Enter score"/>
-              <small>{this.state.formErrors['score'] && "Please enter score"}</small>
+              <label className="float-left label-text">Number of Questions</label>
+              <input type="number" name="questionCount" onChange={this.handleChange} value={this.state.questionCount} className="form-control form-input"/>
+              <small>{this.state.formErrors['questionCount'] && "Please enter question count"}</small>
             </div>
           </div>
           <div className="offset-md-1 col-md-10 mb-4">
-            <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">Submit score</button>
+            <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">ADD</button>
           </div>
         </div>
       </div>
@@ -118,4 +94,4 @@ class RatingModal extends Component {
   }
 }
 
-export default RatingModal;
+export default QuestionCount;

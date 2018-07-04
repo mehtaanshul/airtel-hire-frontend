@@ -16,6 +16,7 @@ import NewProblemPage from './pages/Admin/Challenge/NewProblem';
 import SubmissionsPage from './pages/Admin/Challenge/Submissions';
 import AdminLeaderBoardPage from './pages/Admin/Challenge/Leaderboard';
 import AdminLoginPage from './pages/Admin/Login/Login';
+import AdminQuestionnairePage from './pages/Admin/Questionnaire/Questionnaire';
 
 const App = () => (
   <Router>
@@ -34,6 +35,7 @@ const App = () => (
         <Route path="/admin/newproblem" component={NewProblemPage} />
         <Route path="/admin/submissions" component={SubmissionsPage} />
         <Route path="/admin/leaderboard" component={AdminLeaderBoardPage} />
+        <Route path="/admin/questionnaire" component={AdminQuestionnairePage} />
       </div>
   </Router>
   );

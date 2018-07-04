@@ -10,7 +10,7 @@ class Card extends Component {
         <p>{this.props.startDate}, {this.props.startTime}</p>
         <div className="row">
           <div className="col-md-6">
-            <a href={'/submissions?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Submissions</a>
+            <a href={'/admin/submissions?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Submissions</a>
           </div>
           <div className="col-md-6">
             <a href={'/admin/leaderboard?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Leaderboard</a>
@@ -37,7 +37,7 @@ class Card extends Component {
         <p>{this.props.endDate}, {this.props.endTime}</p>
         <div className="row">
           <div className="col-md-6">
-            <a href={'/submissions?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Submissions</a>
+            <a href={'/admin/submissions?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Submissions</a>
           </div>
           <div className="col-md-6">
             <a href={'/admin/leaderboard?cid='+this.props.cid} className="btn btn-success btn-sm btn-block">Leaderboard</a>

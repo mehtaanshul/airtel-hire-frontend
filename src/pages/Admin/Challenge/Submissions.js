@@ -44,20 +44,26 @@ class Submissions extends Component {
     });
   }
 
-  onSubmit(pid){
+  onSubmit(){
 
-      let url = 'http://192.168.1.26:8080/allsubmissions/'+pid;
+      let url = 'http://192.168.1.26:8080/allsubmissions/'+this.state.problemId;
 
       fetch(url)
         .then(res => res.json())
         .then((result) => {
           console.log("submissions",result);
           this.setState({
+            showModal:false,
             submissions:result,
           });
         }, (error) => {
             console.log(error);
     });
+  }
+
+  downloadFile(uid){
+    let url='http://192.168.1.26:8080/file/'+uid+'/'+this.state.problemId;
+    window.open(url, '_blank');
   }
 
   showRatingModal(uid){
@@ -83,7 +89,7 @@ class Submissions extends Component {
             </select>
           </div>
           <div className="col-lg-2 mt-4">
-            <button type="button" onClick={() => this.onSubmit(this.state.problemId)} className="btn btn-info btn-block">Submit</button>
+            <button type="button" onClick={this.onSubmit} className="btn btn-info btn-block">Submit</button>
           </div>
           <table className="table mt-4">
             <thead>
@@ -100,7 +106,7 @@ class Submissions extends Component {
                   <tr key={index} >
                     <th>{submission.uid}</th>
                     <td>{submission.uname}</td>
-                    <td> <button type="button" className="btn btn-outline-info btn-sm">Download solution</button> </td>
+                    <td> <button type="button" onClick={() => this.downloadFile(submission.uid)} className="btn btn-outline-info btn-sm">Download solution</button> </td>
                     <td> {submission.score === null ? (<button type="button" onClick={() => this.showRatingModal(submission.uid)} className="btn btn-info btn-sm">Rate</button>) : submission.score } </td>
                   </tr>
                 );
@@ -108,7 +114,7 @@ class Submissions extends Component {
             </tbody>
           </table>
         </div>
-        <RatingModal userId={this.state.userId} challengeId={this.state.cid} problemId={this.state.problemId} show={this.state.showModal}></RatingModal>
+        <RatingModal onModalClose={this.onSubmit} userId={this.state.userId} challengeId={this.state.cid} problemId={this.state.problemId} show={this.state.showModal}></RatingModal>
       </div>
     );
   }
