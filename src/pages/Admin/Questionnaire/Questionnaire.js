@@ -30,6 +30,11 @@ class Questionnaire extends Component {
     this.setState(this.state);
   }
 
+  handleOptionsChange(e,index,i){
+    this.state.questions[index]["questionOptions"][i] = e.target.value;
+    this.setState(this.state);
+  }
+
   addQuestion(){
     let questions = this.state.questions; 
     
@@ -44,8 +49,20 @@ class Questionnaire extends Component {
     this.setState({questions:questions});
   }
 
-  addOption(){
+  addOption(index){
+    let questions = this.state.questions;
+    questions[index]["questionOptions"].push('');
+    this.setState({questions});
+  }
 
+  renderOptions(index){
+    let items = [];
+    for(let i=0;i<this.state.questions[index]["questionOptions"].length;i++){
+      items.push(
+        <input type="text" name="questionOptions" class="form-control" onChange={(e) => this.handleOptionsChange(e,index,i)} value={this.state.questions[index]["questionOptions"][i]}/>
+      );
+    }
+    return items;
   }
 
   renderQuestions(){
@@ -92,7 +109,17 @@ class Questionnaire extends Component {
           <div className="row mt-4">
             <div className="col-md-6">
               <label className="float-left">Question Statement</label>
-              <textarea name="questionStatement" class="form-control" rows="3"></textarea>
+              <textarea name="questionStatement" className="form-control" rows="3"></textarea>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              {this.renderOptions(i)}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-3">
+              <button type="button" onClick={() => this.addOption(i)} class="btn btn-info">Add a option</button>
             </div>
           </div>
         </div>
