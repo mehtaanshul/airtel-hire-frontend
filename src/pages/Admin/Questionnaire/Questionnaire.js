@@ -10,20 +10,89 @@ class Questionnaire extends Component {
       questionCount:'',
       questions:[
         {
-          questionType:'',
-          questionStatement:'',
-          questionOptions:[],
+          type:'',
+          qstatement:'',
+          options:[],
         }
       ],
       showAlert:false,
-      showModal:true,
       submitting:false,
-      formErrors:{
-
-      },
+      formErrors:false,
     };
     this.addQuestion = this.addQuestion.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.hideAlert = this.hideAlert.bind(this);
   }
+
+  hideAlert(){
+    this.setState({showAlert:false});
+  }
+
+  onSubmit(e){
+
+    /*this.validateForm();
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      e.preventDefault();
+      return;
+    }*/
+
+    this.setState({
+      submitting:true
+    });
+
+    let url = 'http://192.168.1.26:8080/questionnaires';
+    console.log(this.state.questions);
+    fetch(url,{
+         method: 'post',
+         headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+         },
+         body: JSON.stringify(this.state.questions)
+        })
+        .then((res)=>res.json())
+        .then((res)=>{
+          if(res["status"] === "success"){
+            window.scroll(0,0);
+            this.setState({
+              submitting:false,
+              showAlert:true,
+              questions:[
+                {
+                  type:'',
+                  qstatement:'',
+                  options:[],
+                }
+              ]
+            })
+          }
+        }, (error)=>{
+            console.log(error);
+        });
+  }
+
+ /* validateForm(){
+
+    let requiredCheckFields = ["type", "options","qstatement"];
+
+    let field;
+
+    for(let i=0;i<requiredCheckFields.length; i++){
+
+      field = requiredCheckFields[i];
+
+      if(this.state["questions"][field].trim().length === 0){
+        this.state.formErrors = true;
+      }
+    }
+
+    if(this.state.formErrors === true){
+      this.setState(this.state);
+      return;
+    }
+
+  }*/
 
   handleTypeChange(e, index){
     this.state["questions"][index][e.target.name] = e.target.value;
@@ -31,7 +100,12 @@ class Questionnaire extends Component {
   }
 
   handleOptionsChange(e,index,i){
-    this.state.questions[index]["questionOptions"][i] = e.target.value;
+    this.state.questions[index]["options"][i] = e.target.value;
+    this.setState(this.state);
+  }
+
+  handleQuestionStatementChange(e,i){
+    this.state.questions[i]["qstatement"] = e.target.value;
     this.setState(this.state);
   }
 
@@ -40,9 +114,9 @@ class Questionnaire extends Component {
     
     questions.push(
       {
-        questionType:'Type',
-        questionStatement:'',
-        questionOptions:[],
+        type:'Type',
+        qstatement:'',
+        options:[],
       }
     );
 
@@ -51,15 +125,18 @@ class Questionnaire extends Component {
 
   addOption(index){
     let questions = this.state.questions;
-    questions[index]["questionOptions"].push('');
+    questions[index]["options"].push('');
     this.setState({questions});
   }
 
   renderOptions(index){
     let items = [];
-    for(let i=0;i<this.state.questions[index]["questionOptions"].length;i++){
+    for(let i=0;i<this.state.questions[index]["options"].length;i++){
       items.push(
-        <input type="text" name="questionOptions" class="form-control" onChange={(e) => this.handleOptionsChange(e,index,i)} value={this.state.questions[index]["questionOptions"][i]}/>
+        <div className="mt-2">
+          <label className="float-left">{"Option "+(i+1)}</label>
+          <textarea rows="2" value={this.state.questions[index]["options"][i]} name="options" className="form-control mt-2" onChange={(e) => this.handleOptionsChange(e,index,i)} value={this.state.questions[index]["options"][i]}/>
+        </div>
       );
     }
     return items;
@@ -94,11 +171,13 @@ class Questionnaire extends Component {
 
     for (let i = 0; i < this.state.questions.length; i++) {
       items.push(
-        <div key={i}>
-          <div className="row">
+        <div key={i} className="mt-4">
+          <h5 className="text-left">{"Question " + (i+1)}</h5>
+          <hr/>
+          <div className="row mt-4">
             <div className="col-md-3">
               <label className="float-left" >Question Type</label>
-              <select value={this.state.questions[i]["questionType"]} name="questionType" onChange={(e) => this.handleTypeChange(e,i)} className="custom-select">
+              <select value={this.state.questions[i]["type"]} name="type" onChange={(e) => this.handleTypeChange(e,i)} className="custom-select">
                   <option>Type</option>
                   <option value="subjective">Subjective</option>
                   <option value="mcq">MCQ</option>
@@ -109,7 +188,7 @@ class Questionnaire extends Component {
           <div className="row mt-4">
             <div className="col-md-6">
               <label className="float-left">Question Statement</label>
-              <textarea name="questionStatement" className="form-control" rows="3"></textarea>
+              <textarea name="qstatement" onChange={(e) => this.handleQuestionStatementChange(e,i)} value={this.state.questions[i]["qstatement"]} className="form-control" rows="3"></textarea>
             </div>
           </div>
           <div className="row">
@@ -117,9 +196,9 @@ class Questionnaire extends Component {
               {this.renderOptions(i)}
             </div>
           </div>
-          <div className="row">
+          <div className="row mt-2">
             <div className="col-md-3">
-              <button type="button" onClick={() => this.addOption(i)} class="btn btn-info">Add a option</button>
+              {this.state.questions[i]["type"] === 'mcq' &&  <button type="button" onClick={() => this.addOption(i)} className=" float-left btn btn-info">Add a option</button>}
             </div>
           </div>
         </div>
@@ -128,17 +207,31 @@ class Questionnaire extends Component {
     return items;
   }
 
+  renderAlert(){
+    return(
+      <div className="alert alert-primary mt-4" role="alert">
+        <button onClick={this.hideAlert} type="button" className="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        Questionnaire added successfully!
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="complete-body">
         <Header />
         <div className="container mt-4">
-          <h4 className="text-left">Create Questionnaire</h4>
-          <hr/>
+          {this.state.showAlert && this.renderAlert()}
+          <h3 className="text-left">Create Questionnaire</h3>
           {this.renderQuestions()}
-          <div className="row mt-4 ml-2">
-            <button type="button" onClick={this.addQuestion} className="btn btn-info">Add a question</button>
+          <div className="row mt-4">
+            <div className="col-md-2">
+            <button type="button" onClick={this.addQuestion} className="btn btn-info">Add another question</button>
+            </div>
           </div>
+          <button type="button" onClick={this.onSubmit} className="btn btn-success float-left mt-4">Submit Questionnaire</button>
         </div>
       </div>
     );

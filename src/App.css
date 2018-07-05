@@ -14,6 +14,13 @@
   color: white;
 }
 
+.header-color{
+  background-color: #EC1D23;
+}
+.header-text-color{
+  margin-top: 8px;
+  color: white!important;
+}
 .App-title {
   font-size: 1.5em;
 }
@@ -88,7 +95,11 @@
   margin-top: 48px;
 }
 .mcq {
-  margin-bottom: 48px;
+  margin-top: 48px;
+}
+
+.subjective {
+  margin-top: 48px;
 }
 
 .option-selected{

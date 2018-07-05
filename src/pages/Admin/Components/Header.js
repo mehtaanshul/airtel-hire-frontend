@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../../img/airtel-logo_opt.png';
+import logo from '../../../img/logo.png';
 
 class Header extends Component {
   constructor(props){
@@ -13,7 +13,7 @@ class Header extends Component {
   render() {
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top bg-white border-bottom border border-light">
+        <nav className="navbar navbar-expand-lg navbar-light fixed-top header-color">
           <a className="navbar-brand" href="/admin">
               <img src={logo} height="30" alt="abc"/>
           </a>
@@ -24,13 +24,16 @@ class Header extends Component {
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <a className="nav-link" href="/admin">All challenges</a>
+                <a className="nav-link header-text-color" href="/admin">All challenges</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/admin/newchallenge">New challenge</a>
+                <a className="nav-link header-text-color" href="/admin/newchallenge">New challenge</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/admin/newproblem">New Problem</a>
+                <a className="nav-link header-text-color" href="/admin/newproblem">New Problem</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link header-text-color" href="/admin/users">Users</a>
               </li>
             </ul>
           </div>

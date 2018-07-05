@@ -17,6 +17,8 @@ import SubmissionsPage from './pages/Admin/Challenge/Submissions';
 import AdminLeaderBoardPage from './pages/Admin/Challenge/Leaderboard';
 import AdminLoginPage from './pages/Admin/Login/Login';
 import AdminQuestionnairePage from './pages/Admin/Questionnaire/Questionnaire';
+import UsersPage from './pages/Admin/Users/Users';
+import UserProfilePage from './pages/Admin/Users/Profile';
 
 const App = () => (
   <Router>
@@ -36,6 +38,8 @@ const App = () => (
         <Route path="/admin/submissions" component={SubmissionsPage} />
         <Route path="/admin/leaderboard" component={AdminLeaderBoardPage} />
         <Route path="/admin/questionnaire" component={AdminQuestionnairePage} />
+        <Route path="/admin/users" component={UsersPage} />
+        <Route path="/admin/user/profile" component={UserProfilePage} />
       </div>
   </Router>
   );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../../img/airtel-logo_opt.png';
+import logo from '../../../img/logo.png';
 import login from '../../../img/outline-person_outline-24px.svg';
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
@@ -32,11 +32,11 @@ class Header extends Component {
   }
 
   renderLoginButton = () => {
-    return (<button type="button" className="btn btn-outline-success btn-sm" onClick={this.openLoginModal} >Login / Sign Up</button>);
+    return (<button type="button" className="btn btn-outline-light btn-sm" onClick={this.openLoginModal} >Login / Sign Up</button>);
   }
 
   renderUserButton = () => {
-    return (<a className="btn btn-outline-info btn-sm" href="/profile" >Welcome, User</a>); 
+    return (<a className="btn btn-outline-light btn-sm" href="/profile" >Welcome, User</a>); 
   }
   changeUserStatus(){
     this.setState({
@@ -50,7 +50,7 @@ class Header extends Component {
 
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top bg-white border-bottom border border-light">
+        <nav className="navbar navbar-expand-lg navbar-light fixed-top header-color">
           <a className="navbar-brand" href="/">
               <img src={logo} height="30" alt="abc"/>
           </a>
