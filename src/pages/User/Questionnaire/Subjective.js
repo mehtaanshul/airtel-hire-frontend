@@ -13,7 +13,7 @@ class Subjective extends Component {
     this.setState({
       answer:e.target.value,
     });
-    this.props.onSelect(this.props.index,this.props.data.qid,this.state.answer,this.props.data.type);
+    this.props.onSelect(this.props.index,this.props.data.qid,this.state.answer);
   }
   render(){
     return (

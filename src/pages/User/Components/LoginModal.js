@@ -62,13 +62,14 @@ class LoginModal extends Component {
         })
         .then((res)=>res.json())
         .then((res)=>{
+          console.log('login',res);
           if(res['status']==='success'){
             let user = {
               uid: res['id'],
+              type:res['type'],
             }
             sessionStorage.setItem("user",JSON.stringify(user));
-            //this.props.changeUserStatus();
-            window.location.reload();
+            this.props.changeUserStatus();
             this.setState({
               showModal:false,
             });
@@ -126,15 +127,21 @@ class LoginModal extends Component {
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail);
   }
 
+  renderCloseButton(){
+    return (
+      <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    );
+  }
+
   renderModal(){
     return (
       <div>
         <div className="login-modal">
         </div>
         <div className="login-form">
-          <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          {this.renderCloseButton()}
           <form className="mb-5 mt-5">
             <div className="form-group">
               <div className="offset-md-1 col-md-10">
@@ -155,7 +162,7 @@ class LoginModal extends Component {
               <small>{this.state.loginerror}</small>
               <hr/>
               <label className="label-text"> Don't have an account</label>
-              <button type="button"  onClick={this.onRegister} className="btn btn-primary btn-block">Create Account</button>
+              <button type="button"  onClick={this.onRegister} disabled={this.props.isQuestionnaire ? "disabled" : ""} className="btn btn-primary btn-block">Create Account</button>
             </div>
           </form>
         </div>

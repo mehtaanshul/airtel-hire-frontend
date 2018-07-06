@@ -22,7 +22,6 @@ class Problem extends Component {
     
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
-    const type = params.get('type');
     const pid = params.get('pid');
 
     let fetchurl = 'http://192.168.1.26:8080/problem/'+pid;

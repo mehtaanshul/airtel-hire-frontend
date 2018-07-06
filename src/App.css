@@ -36,18 +36,19 @@
 }
 
 .login-modal {
-  z-index: 1050;
-  position: absolute;
+  z-index: 1000;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-color: lightgrey;
   opacity: 0.5;
 }
 
+
 .login-form {
   position: absolute;
   background-color: white;
-  z-index: 1050;
+  z-index: 1000;
   top: 25%;
   border-radius: 4px;
 }

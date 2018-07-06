@@ -12,6 +12,8 @@ class Questionnaire extends Component {
       loading:false,
       questions:[],
       answers:[],
+      showAlert:false,
+      submitting:false
     };
     this.setAnswer = this.setAnswer.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -19,9 +21,13 @@ class Questionnaire extends Component {
 
   componentWillMount(){
 
-    let url = 'http://192.168.1.26:8080/questionnaires/2'
+    const url = new URL(document.URL);
+    const params =  new URLSearchParams(url.search.slice(1));
+    const questionnaireid = params.get('id');
+
+    let furl = 'http://192.168.1.26:8080/questionnaires/'+questionnaireid;
     
-    fetch(url)
+    fetch(furl)
         .then(res => res.json())
         .then((result) => {
           console.log("questions",result);
@@ -35,17 +41,74 @@ class Questionnaire extends Component {
   }
 
   onSubmit(){
-    console.log(this.state.answers);
+
+    this.setState({
+      submitting:true
+    });
+
+    let url = 'http://192.168.1.26:8080/submissionFromQuestionnaire';
+
+    fetch(url,{
+         method: 'post',
+         headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+         },
+         body: JSON.stringify(this.state.answers)
+        })
+        .then((res)=>res.json())
+        .then((res)=>{
+          if(res["status"] === "success"){
+            this.setState({
+              submitting:false,
+              showAlert:true,
+            })
+          }
+        }, (error)=>{
+            console.log(error);
+        });
   }
 
-  setAnswer(index, qid, answer,type){
+
+  setAnswer(index, qid, answer){
+    
+    let user = sessionStorage['user'];
+    const url = new URL(document.URL);
+    const params =  new URLSearchParams(url.search.slice(1));
+    const questionnaireid = params.get('id');
+
     this.state.answers[index] = {
-      id:29,
-      type:type,
-      qid:qid,
+      id:user['uid'],
+      qid:qid,  //Question ID
+      questionnaireid:questionnaireid, //Questionnaire ID
       answer:answer,
     }
     this.setState(this.state);
+  }
+
+  renderQuestionnaire(){
+    return(
+      <div className="container mt-4 text-left">
+        {this.state.questions.map(
+          (question,index) => {
+            if(question.type === "mcq"){
+              return (<MCQ key={index} data={question} index={index} onSelect={this.setAnswer} />);
+            }
+            else if(question.type === "subjective"){
+              return (<Subjective key={index} data={question} index={index} onSelect={this.setAnswer} />);
+            }
+            if(question.type === "truefalse"){
+              return (<TrueFalse key={index} data={question} index={index} onSelect={this.setAnswer} />);
+            }
+          }
+        )}            
+        <div className="row">
+          <div className="col-lg-3 questionnaire-button">
+            <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">Submit</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -63,27 +126,8 @@ class Questionnaire extends Component {
     else{
       return (
         <div className="complete-body">
-          <Header />
-          <div className="container mt-4 text-left">
-            {this.state.questions.map(
-              (question,index) => {
-                if(question.type === "mcq"){
-                  return (<MCQ key={index} data={question} index={index} onSelect={this.setAnswer} />);
-                }
-                else if(question.type === "subjective"){
-                  return (<Subjective key={index} data={question} index={index} onSelect={this.setAnswer} />);
-                }
-                if(question.type === "truefalse"){
-                  return (<TrueFalse key={index} data={question} index={index} onSelect={this.setAnswer} />);
-                }
-              }
-            )}            
-            <div className="row">
-              <div className="col-lg-3 questionnaire-button">
-                <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">Submit</button>
-              </div>
-            </div>
-          </div>
+          <Header/>
+          {this.renderQuestionnaire()}
         </div>
       );
     }
