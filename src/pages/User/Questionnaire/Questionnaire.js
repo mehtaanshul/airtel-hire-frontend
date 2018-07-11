@@ -4,6 +4,7 @@ import loader from '../../../img/loader.svg';
 import MCQ from './MCQ';
 import TrueFalse from './TrueFalse';
 import Subjective from './Subjective';
+import { Redirect } from 'react-router';
 
 class Questionnaire extends Component {
   constructor(props) {
@@ -12,8 +13,8 @@ class Questionnaire extends Component {
       loading:false,
       questions:[],
       answers:[],
-      showAlert:false,
-      submitting:false
+      submitting: false,
+      submissionStatus: false,
     };
     this.setAnswer = this.setAnswer.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -21,6 +22,7 @@ class Questionnaire extends Component {
 
   componentWillMount(){
 
+    let user = JSON.parse(sessionStorage['user']);
     const url = new URL(document.URL);
     const params =  new URLSearchParams(url.search.slice(1));
     const questionnaireid = params.get('id');
@@ -37,11 +39,25 @@ class Questionnaire extends Component {
           });
         }, (error) => {
             console.log(error);
-    });
+        });
+
+    let fetchurl = 'http://192.168.1.26:8080/checksubmissionstatus/'+user['uid']+'/'+questionnaireid;
+
+    fetch(fetchurl)
+    .then(res => res.json())
+    .then((result) => {
+      if(result['status'] == 'success'){
+        this.setState({
+          submissionStatus:true,
+        })
+      }
+    })
   }
 
   onSubmit(){
 
+    console.log(this.state.answers);
+    
     this.setState({
       submitting:true
     });
@@ -61,8 +77,9 @@ class Questionnaire extends Component {
           if(res["status"] === "success"){
             this.setState({
               submitting:false,
-              showAlert:true,
+              submissionStatus:true,
             })
+              console.log("Questionnaire Submitted");
           }
         }, (error)=>{
             console.log(error);
@@ -71,8 +88,7 @@ class Questionnaire extends Component {
 
 
   setAnswer(index, qid, answer){
-    
-    let user = sessionStorage['user'];
+    let user = JSON.parse(sessionStorage['user']);
     const url = new URL(document.URL);
     const params =  new URLSearchParams(url.search.slice(1));
     const questionnaireid = params.get('id');
@@ -111,7 +127,25 @@ class Questionnaire extends Component {
     );
   }
 
+  renderAlert(){
+    return(
+      <div className="alert alert-primary mt-4" role="alert">
+        You have successfully submitted the quiz!
+      </div>
+    );
+  }
+
   render() {
+    
+    let user = JSON.parse(sessionStorage['user']);
+
+    if(!sessionStorage['user'] || user['type'] !== 'questionnaire'){
+      const url = new URL(document.URL);
+      const params = new URLSearchParams(url.search.slice(1));
+      const id = params.get('id');
+      return <Redirect to={'/questionnaire/login?id='+id} />
+    }
+
     if(this.state.loading){
       return (
         <div>
@@ -126,8 +160,9 @@ class Questionnaire extends Component {
     else{
       return (
         <div className="complete-body">
-          <Header/>
-          {this.renderQuestionnaire()}
+          <Header profile={false}/>
+          {!this.state.submissionStatus && this.renderQuestionnaire()}
+          {this.state.submissionStatus && this.renderAlert()}
         </div>
       );
     }

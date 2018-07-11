@@ -12,6 +12,8 @@ class Questionnaire extends Component {
         {
           type:'',
           qstatement:'',
+          marks:'',
+          answer:'',
           options:[],
         }
       ],
@@ -29,13 +31,6 @@ class Questionnaire extends Component {
   }
 
   onSubmit(e){
-
-    /*this.validateForm();
-
-    if(Object.keys(this.state.formErrors).length > 0){
-      e.preventDefault();
-      return;
-    }*/
 
     this.setState({
       submitting:true
@@ -61,6 +56,8 @@ class Questionnaire extends Component {
               questions:[
                 {
                   type:'',
+                  marks:'',
+                  answer:'',
                   qstatement:'',
                   options:[],
                 }
@@ -72,29 +69,8 @@ class Questionnaire extends Component {
         });
   }
 
- /* validateForm(){
 
-    let requiredCheckFields = ["type", "options","qstatement"];
-
-    let field;
-
-    for(let i=0;i<requiredCheckFields.length; i++){
-
-      field = requiredCheckFields[i];
-
-      if(this.state["questions"][field].trim().length === 0){
-        this.state.formErrors = true;
-      }
-    }
-
-    if(this.state.formErrors === true){
-      this.setState(this.state);
-      return;
-    }
-
-  }*/
-
-  handleTypeChange(e, index){
+  handleChange(e, index){
     this.state["questions"][index][e.target.name] = e.target.value;
     this.setState(this.state);
   }
@@ -116,6 +92,8 @@ class Questionnaire extends Component {
       {
         type:'Type',
         qstatement:'',
+        marks:'',
+        answer:'',
         options:[],
       }
     );
@@ -177,12 +155,16 @@ class Questionnaire extends Component {
           <div className="row mt-4">
             <div className="col-md-3">
               <label className="float-left" >Question Type</label>
-              <select value={this.state.questions[i]["type"]} name="type" onChange={(e) => this.handleTypeChange(e,i)} className="custom-select">
+              <select value={this.state.questions[i]["type"]} name="type" onChange={(e) => this.handleChange(e,i)} className="custom-select">
                   <option>Type</option>
                   <option value="subjective">Subjective</option>
                   <option value="mcq">MCQ</option>
                   <option value="truefalse">True/False</option>
               </select>
+            </div>
+            <div className="col-md-3">
+              <label className="float-left" >Question Marks</label>
+              <input type="text" name="marks" className="form-control" onChange={(e) => this.handleChange(e,i)} value={this.state.questions[i]["marks"]} />
             </div>
           </div>
           <div className="row mt-4">
@@ -193,7 +175,7 @@ class Questionnaire extends Component {
           </div>
           <div className="row">
             <div className="col-md-6">
-              {this.renderOptions(i)}
+              {this.state.questions[i]["type"] === 'mcq' && this.renderOptions(i)}
             </div>
           </div>
           <div className="row mt-2">
@@ -201,6 +183,16 @@ class Questionnaire extends Component {
               {this.state.questions[i]["type"] === 'mcq' &&  <button type="button" onClick={() => this.addOption(i)} className=" float-left btn btn-info">Add a option</button>}
             </div>
           </div>
+          {
+            this.state.questions[i]["type"] === 'truefalse' || this.state.questions[i]["type"] === 'mcq' ? (
+              <div className="row mt-4">
+                <div className="col-md-3">
+                  <label className="float-left">Answer</label>
+                  <input type="text" name="answer" class="form-control" onChange={(e) => this.handleChange(e,i)} value={this.state.questions[i]["answer"]} placeholder={this.state.questions[i]["type"] === 'truefalse' ? "1 for true , 2 for false" : "Enter 1 for option 1 and so on"} />
+                </div>
+              </div>
+            ) : null
+          }
         </div>
       );
     }

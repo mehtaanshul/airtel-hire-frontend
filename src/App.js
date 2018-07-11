@@ -9,6 +9,7 @@ import ProblemPage from './pages/User/Challenge/Problem';
 import LeaderboardPage from './pages/User/Challenge/Leaderboard';
 import ProfilePage from './pages/User/Profile/Profile';
 import QuestionnairePage from './pages/User/Questionnaire/Questionnaire';
+import QuestionnaireLoginPage from './pages/User/Questionnaire/Login';
 
 import AdminHomePage from './pages/Admin/Home/Home';
 import NewChallengePage from './pages/Admin/Challenge/NewChallenge';
@@ -19,6 +20,8 @@ import AdminLoginPage from './pages/Admin/Login/Login';
 import AdminQuestionnairePage from './pages/Admin/Questionnaire/Questionnaire';
 import UsersPage from './pages/Admin/Users/Users';
 import UserProfilePage from './pages/Admin/Users/Profile';
+import QuestionnaireSubmissionsPage from './pages/Admin/Questionnaire/Submissions';
+import QuestionnaireSubmissionPage from './pages/Admin/Questionnaire/Submission';
 
 const App = () => (
   <Router>
@@ -29,7 +32,8 @@ const App = () => (
         <Route path="/problem" component={ProblemPage} />
         <Route path="/leaderboard" component={LeaderboardPage} />
         <Route path="/profile" component={ProfilePage} />
-        <Route path="/questionnaire" component={QuestionnairePage} />
+        <Route exact path="/questionnaire" component={QuestionnairePage} />
+        <Route path="/questionnaire/login" component={QuestionnaireLoginPage} />
         
         <Route exact path="/admin" component={AdminHomePage} />
         <Route path="/admin/newchallenge" component={NewChallengePage} />
@@ -37,9 +41,11 @@ const App = () => (
         <Route path="/admin/newproblem" component={NewProblemPage} />
         <Route path="/admin/submissions" component={SubmissionsPage} />
         <Route path="/admin/leaderboard" component={AdminLeaderBoardPage} />
-        <Route path="/admin/questionnaire" component={AdminQuestionnairePage} />
+        <Route exact path="/admin/questionnaire" component={AdminQuestionnairePage} />
         <Route path="/admin/users" component={UsersPage} />
         <Route path="/admin/user/profile" component={UserProfilePage} />
+        <Route path="/admin/questionnaire/submissions" component={QuestionnaireSubmissionsPage} />
+        <Route path="/admin/questionnaire/submission" component={QuestionnaireSubmissionPage} />
       </div>
   </Router>
   );

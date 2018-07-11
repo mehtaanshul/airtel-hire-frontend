@@ -55,8 +55,8 @@ class Header extends Component {
               <img src={logo} height="30" alt="abc"/>
           </a>
           <div className="collapse navbar-collapse d-flex justify-content-end">
-            {userLoggedIn && this.renderUserButton()}
-            {!userLoggedIn && this.renderLoginButton()}
+            {this.props.profile && userLoggedIn && this.renderUserButton()}
+            {this.props.profile && !userLoggedIn && this.renderLoginButton()}
           </div>
         </nav>
         <LoginModal 

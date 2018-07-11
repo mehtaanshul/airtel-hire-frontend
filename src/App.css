@@ -175,8 +175,8 @@
   align-items: center;
 }
 .admin-login-page .admin-login-button {
-  background-color: #e40001;
-  border-color: #e40001;
+  background-color: #EC1D23;
+  border-color: #EC1D23;
   margin-bottom: 48px;
 }
 .admin-login-page .admin-login {
@@ -184,7 +184,7 @@
   background-color: white;
 }
 .admin-login-page .admin-login-heading {
-  background-color: #e40001;
+  background-color: #EC1D23;
   color: white;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;

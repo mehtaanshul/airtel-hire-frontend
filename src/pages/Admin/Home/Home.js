@@ -38,7 +38,7 @@ class Home extends Component {
   render() {
 
     if(!sessionStorage['admin']){
-      return <Redirect to='/admin/login' />
+      return <Redirect to='/admin/login/' />
     }
     
     let filteredChallenges = this.state.challenges.filter(

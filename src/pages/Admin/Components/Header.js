@@ -35,6 +35,9 @@ class Header extends Component {
               <li className="nav-item">
                 <a className="nav-link header-text-color" href="/admin/users">Users</a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link header-text-color" href="/admin/questionnaire/submissions">Submissions</a>
+              </li>
             </ul>
           </div>
         </nav>

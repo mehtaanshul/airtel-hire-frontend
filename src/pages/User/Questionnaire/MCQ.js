@@ -13,10 +13,12 @@ class MCQ extends Component {
   
 
   onOptionSelect(index){
+    
     this.setState({
       answer: (index+1),
     });
-    this.props.onSelect(this.props.index,this.props.data.qid,this.state.answer);
+
+    this.props.onSelect(this.props.index,this.props.data.qid,(index+1));
   }
 
 
