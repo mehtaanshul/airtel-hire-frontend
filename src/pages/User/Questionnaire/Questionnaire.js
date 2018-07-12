@@ -20,7 +20,7 @@ class Questionnaire extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillMount(){
+  componentDidMount(){
 
     let user = JSON.parse(sessionStorage['user']);
     const url = new URL(document.URL);
@@ -160,7 +160,7 @@ class Questionnaire extends Component {
     else{
       return (
         <div className="complete-body">
-          <Header profile={false}/>
+          <Header hideprofile={true}/>
           {!this.state.submissionStatus && this.renderQuestionnaire()}
           {this.state.submissionStatus && this.renderAlert()}
         </div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import RatingModal from '../Components/RatingModal';
+import loader from '../../../img/loader.svg';
 
 class Submissions extends Component {
   constructor(props) {
@@ -8,9 +9,10 @@ class Submissions extends Component {
     this.state = {
       problems:[],
       cid:'',
-      problemId:'',
+      problemId:'notselected',
       submissions:[],
       showModal:false,
+      loading:true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -38,6 +40,7 @@ class Submissions extends Component {
           this.setState({
             problems:result,
             cid:cid,
+            loading:false,
           });
         }, (error) => {
             console.log(error);
@@ -52,10 +55,19 @@ class Submissions extends Component {
         .then(res => res.json())
         .then((result) => {
           console.log("submissions",result);
-          this.setState({
-            showModal:false,
-            submissions:result,
-          });
+          if(result.length){
+            this.setState({
+              showModal:false,
+              submissions:result,
+            });
+          }
+          else {
+            this.setState({
+              showModal:false,
+              submissions:result,
+            });
+          }
+          
         }, (error) => {
             console.log(error);
     });
@@ -73,50 +85,83 @@ class Submissions extends Component {
     });
   }
 
+  renderSubmissionsTable(){
+    if(this.state.submissions.length){
+      return(
+        <table className="table mt-4">
+          <thead>
+            <tr>
+              <th scope="col">User Id</th>
+              <th scope="col">User name</th>
+              <th scope="col"></th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.submissions.map((submission,index)=>{
+              return(
+                <tr key={index} >
+                  <th>{submission.uid}</th>
+                  <td>{submission.uname}</td>
+                  <td> <button type="button" onClick={() => this.downloadFile(submission.uid)} className="btn btn-outline-info btn-sm">Download solution</button> </td>
+                  <td> {submission.score === null ? (<button type="button" onClick={() => this.showRatingModal(submission.uid)} className="btn btn-info btn-sm">Rate</button>) : submission.score } </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      );
+    }
+    else {
+      return(
+        <h5> No Submissions Yet</h5>
+      );
+    }
+    
+  }
 
 
   render() {
-    return (
-      <div className="complete-body">
+
+    if(this.state.loading){
+      return (
+        <div>
         <Header/>
-        <div className="container mt-4">
-          <div className="col-lg-6">
-            <select onChange={this.handleChange} name="problemId" value={this.state.problemId} className="custom-select">
-              <option selected>Select problem to view submission lisit</option>
-              {this.state.problems.map((problem)=> (
-                <option key={problem.pid} value={problem.pid}>{problem.probname}</option>  
-              ))}
-            </select>
+          <div className="loader-svg">
+            <img src={loader}/>
           </div>
-          <div className="col-lg-2 mt-4">
-            <button type="button" onClick={this.onSubmit} className="btn btn-info btn-block">Submit</button>
-          </div>
-          <table className="table mt-4">
-            <thead>
-              <tr>
-                <th scope="col">User Id</th>
-                <th scope="col">User name</th>
-                <th scope="col"></th>
-                <th scope="col">Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.submissions.map((submission,index)=>{
-                return(
-                  <tr key={index} >
-                    <th>{submission.uid}</th>
-                    <td>{submission.uname}</td>
-                    <td> <button type="button" onClick={() => this.downloadFile(submission.uid)} className="btn btn-outline-info btn-sm">Download solution</button> </td>
-                    <td> {submission.score === null ? (<button type="button" onClick={() => this.showRatingModal(submission.uid)} className="btn btn-info btn-sm">Rate</button>) : submission.score } </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
         </div>
-        <RatingModal onModalClose={this.onSubmit} userId={this.state.userId} challengeId={this.state.cid} problemId={this.state.problemId} show={this.state.showModal}></RatingModal>
-      </div>
-    );
+      );
+    }
+    else {
+      return (
+        <div className="complete-body">
+          <Header/>
+          <div className="container mt-4">
+            <div className="col-lg-6">
+              <select onChange={this.handleChange} name="problemId" value={this.state.problemId} className="custom-select">
+                <option value="notselected" defaultValue>Select problem to view submission lisit</option>
+                {this.state.problems.map((problem)=> (
+                  <option key={problem.pid} value={problem.pid}>{problem.probname}</option>  
+                ))}
+              </select>
+            </div>
+            <div className="col-lg-2 mt-4">
+              <button 
+                type="button" 
+                onClick={this.onSubmit} 
+                className="btn btn-info btn-block"
+                disabled={this.state.problemId === "notselected" ? "disabled" : ""}
+              >
+                Submit
+              </button>
+            </div>
+            {this.state.problemId === "notselected" ? "" : this.renderSubmissionsTable()}
+          </div>
+          <RatingModal onModalClose={this.onSubmit} userId={this.state.userId} challengeId={this.state.cid} problemId={this.state.problemId} show={this.state.showModal}></RatingModal>
+        </div>
+      );  
+    } 
   }
 }
 

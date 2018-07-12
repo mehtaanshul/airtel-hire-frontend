@@ -4,6 +4,7 @@ import Card from '../Components/Card';
 import sample from '../../../img/sample.png';
 import { Link } from "react-router-dom";
 import { Redirect } from 'react-router';
+import loader from '../../../img/loader.svg';
 
 
 class Home extends Component {
@@ -12,6 +13,7 @@ class Home extends Component {
     this.state = {
       challengesCategory:'all',
       challenges:[],
+      loading:true
     };
   }
 
@@ -29,6 +31,7 @@ class Home extends Component {
           console.log(result);
           this.setState({
             challenges:result,
+            loading:false
           });
         }, (error) => {
             console.log(error);
@@ -66,39 +69,52 @@ class Home extends Component {
         />
       </div> 
     );
-
-    return (
-      <div className="complete-body">
-        <Header />
-        <div className="bg-light p-4">
-          <h3 >All Challenges</h3>
-          <div className="container mt-4">
-            <form>
-              <div className="row">
-                <div className="col-md-3">
-                  <div className="form-group">
-                    <select value={this.state.challengesCategory} onChange={this.handleChange} className="form-control">
-                      <option value="all" >All</option>
-                      <option value="live" >Live</option>
-                      <option value="upcoming" >Upcoming</option>
-                      <option value="previous" >Previous</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-md-3">
-                  <div className="form-group">
-                    <Link to={"/newchallenge"} className="btn btn-outline-success btn-block">Add a new Challenge</Link>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <div className="row">
-              {cards}
-            </div>
-          </div>  
+    
+    if(this.state.loading){
+      return (
+        <div>
+        <Header/>
+          <div className="loader-svg">
+            <img src={loader}/>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    else {
+      return (
+        <div className="complete-body">
+          <Header />
+          <div className="bg-light p-4">
+            <h3 >All Challenges</h3>
+            <div className="container mt-4">
+              <form>
+                <div className="row">
+                  <div className="col-md-3">
+                    <div className="form-group">
+                      <select value={this.state.challengesCategory} onChange={this.handleChange} className="form-control">
+                        <option value="all" >All</option>
+                        <option value="live" >Live</option>
+                        <option value="upcoming" >Upcoming</option>
+                        <option value="previous" >Previous</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="form-group">
+                      <Link to={"/admin/newchallenge"} className="btn btn-outline-success btn-block">Add a new Challenge</Link>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div className="row">
+                {cards}
+              </div>
+            </div>  
+          </div>
+        </div>
+      );
+    }
   }
 }
 

@@ -40,7 +40,6 @@ class Problems extends Component {
     let problems = this.state.problems.map((problem) => 
       <Link to={'/problem?pid='+problem.pid} className="list-group-item list-group-item-action">{problem.probname}</Link> 
     );
-
     if(this.state.loading){
       return (
         <div>
@@ -64,7 +63,7 @@ class Problems extends Component {
             <Link to={'/challenge?cid='+this.state.cid} className="btn btn-info float-right mb-1 mr-2">About Challenge</Link>
             <h4 className="text-left">Problems</h4>
             <div className="list-group text-left w-100 problems-list">
-            {problems}
+            {problems.length ? problems : "No Problems added"}
             </div>
           </div>
         </div>

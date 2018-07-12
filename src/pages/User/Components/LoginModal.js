@@ -69,7 +69,7 @@ class LoginModal extends Component {
               type:res['type'],
             }
             sessionStorage.setItem("user",JSON.stringify(user));
-            this.props.changeUserStatus();
+            window.location.reload();
             this.setState({
               showModal:false,
             });
@@ -153,7 +153,7 @@ class LoginModal extends Component {
             <div className="form-group">
               <div className="offset-md-1 col-md-10">
                 <label className="float-left label-text">Password</label>
-                <input type="text" name="password" onChange={this.handleChange} value={this.state.password} className="form-control form-input" placeholder="Password" />
+                <input type="password" name="password" onChange={this.handleChange} value={this.state.password} className="form-control form-input" placeholder="Password" />
                 <small>{this.state.formErrors['password']}</small>
               </div>
             </div>

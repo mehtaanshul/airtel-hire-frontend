@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
-
 class AdminLeaderboard extends Component {
   constructor(props) {
     super(props);
@@ -8,13 +7,11 @@ class AdminLeaderboard extends Component {
       leaderboard:[],
     };
   }
-  
   componentDidMount() {
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
     const type = params.get('type');
     const cid = params.get('cid');
-
     let furl = 'http://192.168.1.26:8080/score/'+cid;
     fetch(furl)
         .then(res => res.json())
@@ -27,9 +24,7 @@ class AdminLeaderboard extends Component {
             console.log(error);
     });
   }
-
   render() {
-
     return (
       <div className="complete-body">
         <Header />
@@ -39,7 +34,6 @@ class AdminLeaderboard extends Component {
         </div>
         <div className="row p-4">
           <div className="col-lg-8">
-            <a href="/problems" className="btn btn-info float-right">All Problems</a>
             <h4 className="text-left problem-title">Leaderboard</h4>
             <div className="list-group w-100 mt-3">
               <div className="list-group-item list-group-item-action">
@@ -48,7 +42,7 @@ class AdminLeaderboard extends Component {
               </div>
               {this.state.leaderboard.map((user,index)=>{
                 return(
-                  <a href="#" className="list-group-item list-group-item-action text-left">
+                  <a href={"/admin/user/profile?uid="+user.uid} className="list-group-item list-group-item-action text-left">
                     {index+1}.&nbsp; <strong>{user.uname}</strong>
                     <div className="float-right">{user.score}</div>
                   </a>
@@ -61,5 +55,4 @@ class AdminLeaderboard extends Component {
     );
   }
 }
-
 export default AdminLeaderboard;

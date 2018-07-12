@@ -11,9 +11,11 @@ class Header extends Component {
       showLoginModal:false,
       showRegisterModal:false,
       reRender:false,
+      userLoggedIn : sessionStorage["user"] ? true : false,
     }
     this.openLoginModal = this.openLoginModal.bind(this);
     this.changeUserStatus = this.changeUserStatus.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   openLoginModal(){
@@ -22,13 +24,26 @@ class Header extends Component {
       showRegisterModal: false,
     });
   }
+  
+  changeUserStatus(){
+    this.setState({
+      userLoggedIn:true,
+    });
+  }
+
+  handleLogout(){
+    sessionStorage.removeItem('user');
+    this.setState({
+      userLoggedIn:false,
+      showLoginModal:false,
+    });
+  }
 
   openRegisterModal = () => {
     this.setState({
       showLoginModal: false,
       showRegisterModal: true,
     });
-    {console.log(this.state.showRegisterModal)}
   }
 
   renderLoginButton = () => {
@@ -36,17 +51,17 @@ class Header extends Component {
   }
 
   renderUserButton = () => {
-    return (<a className="btn btn-outline-light btn-sm" href="/profile" >Welcome, User</a>); 
+    return (
+      <div>
+        <a className="btn btn-outline-light btn-sm mr-2" href="/profile" >Welcome, User</a>
+        <button type="button" className="btn btn-outline-light btn-sm" onClick={this.handleLogout}>Logout</button>
+      </div>
+    ); 
   }
-  changeUserStatus(){
-    this.setState({
-      reRender:true,
-    });
-  }
+  
+
 
   render() {
-
-    let userLoggedIn = sessionStorage["user"] ? true : false;
 
     return (
       <div>
@@ -55,8 +70,8 @@ class Header extends Component {
               <img src={logo} height="30" alt="abc"/>
           </a>
           <div className="collapse navbar-collapse d-flex justify-content-end">
-            {this.props.profile && userLoggedIn && this.renderUserButton()}
-            {this.props.profile && !userLoggedIn && this.renderLoginButton()}
+            {!this.props.hideprofile && this.state.userLoggedIn && this.renderUserButton()}
+            {!this.props.hideprofile && !this.state.userLoggedIn && this.renderLoginButton()}
           </div>
         </nav>
         <LoginModal 

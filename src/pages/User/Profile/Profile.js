@@ -13,12 +13,14 @@ class Problem extends Component {
         year:'',
         specialization:'',
         phone_number:'',
+        resume:null,
       },
         profileUpdated:false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
   }
 
   componentDidMount() {
@@ -43,23 +45,28 @@ class Problem extends Component {
     if(this.state.profileUpdated) this.setState({profileUpdated:false});
   }
 
+  onFileChange(e) {
+    this.state["user"]["resume"] = e.target.files[0];
+    this.setState(this.state);
+    if(this.state.profileUpdated) this.setState({profileUpdated:false});
+  }
+
   onSubmit(){
 
     let user = JSON.parse(sessionStorage.getItem("user"));
     let url = 'http://192.168.1.26:8080/update/'+user["uid"];
 
+    const formData = new FormData();
+
+    formData.append('collegename',this.state.user.collegename);
+    formData.append('degree',this.state.user.degree);
+    formData.append('specialization',this.state.user.specialization);
+    formData.append('year',this.state.user.year);
+    formData.append('resume',this.state.user.resume);
+
     fetch(url,{
-         method: 'put',
-         headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-         },
-         body: JSON.stringify({
-          collegename:this.state.user.collegename,
-          degree:this.state.user.degree,
-          year:this.state.user.year,
-          specialization:this.state.user.specialization,
-         })
+         method: 'post',
+         body: formData
         })
         .then((res)=>res.json())
         .then((res)=>{
@@ -104,7 +111,7 @@ class Problem extends Component {
               </div>
               <div className="col-lg-6 mt-4">
                 <label className="float-left">Specialization</label>
-                <input type="text" value={this.state.user.specialization} className="form-control" name="branch" onChange={this.handleChange} placeholder="Enter branch"/>
+                <input type="text" value={this.state.user.specialization} className="form-control" name="specialization" onChange={this.handleChange} placeholder="Enter branch"/>
               </div>
               <div className="col-lg-6 mt-4">
                 <label className="float-left">Year</label>
@@ -114,7 +121,7 @@ class Problem extends Component {
             <div className="row">
               <div className="col-lg-6 mt-4">
                   <label className="float-left">Upload Resume</label>
-                  <input type="file" className="form-control-file"/>
+                  <input type="file" onChange = {this.onFileChange} className="form-control-file"/>
               </div>
             </div>
             <div className="row">

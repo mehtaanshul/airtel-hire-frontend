@@ -24,19 +24,19 @@ class Header extends Component {
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <a className="nav-link header-text-color" href="/admin">All challenges</a>
-              </li>
-              <li className="nav-item">
                 <a className="nav-link header-text-color" href="/admin/newchallenge">New challenge</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link header-text-color" href="/admin/newproblem">New Problem</a>
+                <a className="nav-link header-text-color" href="/admin/questionnaire">New Questionnaire</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link header-text-color" href="/admin/users">Users</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link header-text-color" href="/admin/questionnaire/submissions">Submissions</a>
+                <a className="nav-link header-text-color" href="/admin/questionnaire/submissions">Q Submissions</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link header-text-color" href="/admin/questionnaire/invite">Invite</a>
               </li>
             </ul>
           </div>

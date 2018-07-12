@@ -12,6 +12,7 @@ import QuestionnairePage from './pages/User/Questionnaire/Questionnaire';
 import QuestionnaireLoginPage from './pages/User/Questionnaire/Login';
 
 import AdminHomePage from './pages/Admin/Home/Home';
+import AdminChallengePage from './pages/Admin/Challenge/Challenge';
 import NewChallengePage from './pages/Admin/Challenge/NewChallenge';
 import NewProblemPage from './pages/Admin/Challenge/NewProblem';
 import SubmissionsPage from './pages/Admin/Challenge/Submissions';
@@ -22,6 +23,7 @@ import UsersPage from './pages/Admin/Users/Users';
 import UserProfilePage from './pages/Admin/Users/Profile';
 import QuestionnaireSubmissionsPage from './pages/Admin/Questionnaire/Submissions';
 import QuestionnaireSubmissionPage from './pages/Admin/Questionnaire/Submission';
+import InvitePage from './pages/Admin/Questionnaire/Invite';
 
 const App = () => (
   <Router>
@@ -36,16 +38,18 @@ const App = () => (
         <Route path="/questionnaire/login" component={QuestionnaireLoginPage} />
         
         <Route exact path="/admin" component={AdminHomePage} />
+        <Route exact path="/admin/challenge" component={AdminChallengePage} />
         <Route path="/admin/newchallenge" component={NewChallengePage} />
         <Route path="/admin/login" component={AdminLoginPage} />
         <Route path="/admin/newproblem" component={NewProblemPage} />
         <Route path="/admin/submissions" component={SubmissionsPage} />
         <Route path="/admin/leaderboard" component={AdminLeaderBoardPage} />
-        <Route exact path="/admin/questionnaire" component={AdminQuestionnairePage} />
         <Route path="/admin/users" component={UsersPage} />
+        <Route exact path="/admin/questionnaire" component={AdminQuestionnairePage} />
         <Route path="/admin/user/profile" component={UserProfilePage} />
         <Route path="/admin/questionnaire/submissions" component={QuestionnaireSubmissionsPage} />
         <Route path="/admin/questionnaire/submission" component={QuestionnaireSubmissionPage} />
+        <Route path="/admin/questionnaire/invite" component={InvitePage} />
       </div>
   </Router>
   );

@@ -58,14 +58,13 @@ class NewChallenge extends Component {
     this.setState(this.state); 
   }
   handleDateChange(e){
-    
     let date = e.target.value;
     let arr = date.split("-");
     date = arr[2]+"-"+arr[1]+"-"+arr[0];
 
     this.state[e.target.name+"Temp"] = e.target.value;
     this.state[e.target.name] = date;
-    this.setState(this.state); 
+    this.setState(this.state);
   }
 
   hideAlert(){
@@ -129,6 +128,14 @@ class NewChallenge extends Component {
         });
 }
 
+getCurrentDate(){
+    let date = new Date();
+    let currentDate = date.getFullYear() + '-' + (((date.getMonth() + 1) < 10) ? "0" : "") + (date.getMonth() + 1) + '-' + ((date.getDate() < 10) ? "0" : "") + (date.getDate());
+    return currentDate;
+    //let maxDate = date.getFullYear() + '-' + (((date.getMonth() + 1) < 10) ? "0" : "") + (date.getMonth() + 1) + '-' + (((date.getDate()+2) < 10) ? "0" : "") + (date.getDate()+2);
+    //let currentTime = ((date.getHours() < 10)?"0":"") + date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes();
+  }
+
 validateForm(){
 
     let requiredCheckFields = ["aboutChallenge", "challengeName","startDate","startTime","endDate","endTime","guidelines","prizes","type","faqs"];
@@ -151,6 +158,16 @@ validateForm(){
       this.state.formErrors["banner"] = "Please upload challenge banner";
     }
 
+    if(this.state.startDateTemp > this.state.endDateTemp){
+      this.state.formErrors["date"] = "Start date should be less than end date";
+    }
+    else if(this.state.startDateTemp === this.state.endDateTemp && this.state.startTime > this.state.endTime){
+     this.state.formErrors["date"] = "Start time should be before end time for same date"; 
+    }
+    else {
+      delete this.state.formErrors["date"]; 
+    }
+
     if(Object.keys(this.state.formErrors).length > 0){
       this.setState(this.state);
       return;
@@ -170,7 +187,20 @@ validateForm(){
   }
 
   onFileChange(e) {
-    this.setState({banner:e.target.files[0]})
+
+    let type = e.target.files[0].type.split("/");
+    if(type[1] && e.target.files[0].size <= 500*1024 && type[1].match(/(jpg|png|JPG|PNG|jpeg|JPEG|gif)/g)){
+      this.setState({banner:e.target.files[0]});
+       delete this.state.formErrors["banner"];
+    }
+    else if(e.target.files[0].size > 500*1024) {
+      this.state.formErrors["banner"] = "Image size should be less than 500KB";
+      this.setState(this.state);
+    }
+    else {
+      this.state.formErrors["banner"] = "Invalid format, make sure you are uploading an image.";
+      this.setState(this.state); 
+    }
   }
 
 
@@ -205,7 +235,8 @@ validateForm(){
         <Header />
         <div className="container">
           {this.state.showAlert && this.renderAlert()}
-          <h4 className="mt-4 text-left">Add a new challenge</h4>
+            <a href="/admin/newproblem" className="btn btn-info float-right">Add a problem</a>
+            <h4 className="mt-4 text-left">Add a new challenge</h4>
           <hr/>
           <div className="col-md-5">
             <label className="label-text float-left">Challenge Name</label>
@@ -219,7 +250,7 @@ validateForm(){
             <div className="row">
               <div className="col-md-8">
                 <label className="label-text float-left mt-4">Start date</label>
-                <input type="date" name="startDate" value={this.state.startDateTemp} onChange={this.handleDateChange} className="form-control form-input"/>
+                <input type="date" min={this.getCurrentDate()} name="startDate" value={this.state.startDateTemp} onChange={this.handleDateChange} className="form-control form-input"/>
                 <small>{this.state.formErrors['startDate'] && "Please enter start date"}</small>
               </div>
               <div className="col-md-4">
@@ -231,7 +262,7 @@ validateForm(){
             <div className="row">
               <div className="col-md-8">
                 <label className="label-text float-left mt-4">End date</label>
-                <input type="date" name="endDate" value={this.state.endDateTemp} onChange={this.handleDateChange} className="form-control form-input"/>
+                <input type="date" min={this.state.startDateTemp} name="endDate" value={this.state.endDateTemp} onChange={this.handleDateChange} className="form-control form-input"/>
                 <small>{this.state.formErrors['endDate'] && "Please enter end date"}</small>
               </div>
               <div className="col-md-4">
@@ -243,7 +274,7 @@ validateForm(){
 
             <div className="mt-4">
               <div className="form-group text-left">
-                <label>Upload Challenge Banner</label>
+                <label>Upload Challenge Banner</label>&nbsp;<small>(Resolution recommended : 900px * 300px)</small>
                 <input type="file" onChange={this.onFileChange} className="form-control-file"/>
                 <small>{this.state.formErrors['banner']}</small>
               </div>
@@ -272,7 +303,8 @@ validateForm(){
           </div>
           <div className="col-md-2 mb-4">
             <button type="button" onClick={this.onSubmit} className="btn btn-primary btn-block">{this.state.submitting ? "Submitting.." : "Submit"}</button>
-            <small>{Object.keys(this.state.formErrors).length > 0 && "Please fill all fields"}</small>
+            <small>{Object.keys(this.state.formErrors).length > 0 && "Please fill all fields"}</small><br/>
+            <small>{this.state.formErrors["date"]}</small>
           </div>
         </div>
       </div>

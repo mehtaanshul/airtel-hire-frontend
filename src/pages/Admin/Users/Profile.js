@@ -32,6 +32,11 @@ class Profile extends Component {
     });
   }
 
+  downloadFile(uid){
+    let url='http://192.168.1.26:8080/resume/'+uid;
+    window.open(url, '_blank');
+  }
+
   render() {
     const { user } = this.state;
     if(this.state.loading){
@@ -88,7 +93,7 @@ class Profile extends Component {
             </div>
             <div className="row">
               <div className="col-md-3">
-                <button type="button" class="btn btn-info">Download Resume</button>
+                <button type="button" onClick={() => this.downloadFile(user.id)} class="btn btn-info">Download Resume</button>
               </div>
             </div>
           </div>

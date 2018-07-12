@@ -15,9 +15,10 @@ class Submission extends Component {
   componentDidMount(){
     const url = new URL(document.URL);
     const params =  new URLSearchParams(url.search.slice(1));
-    const questionnaireid = params.get('id');
+    const questionnaireid = params.get('questionnaireid');
+    const uid = params.get('uid');
 
-    let fetchurl = 'http://192.168.1.26:8080/subjective/27'+'/'+questionnaireid;
+    let fetchurl = 'http://192.168.1.26:8080/subjective/'+uid+'/'+questionnaireid;
     fetch(fetchurl)
       .then(res => res.json())
       .then((result) => {
@@ -31,10 +32,14 @@ class Submission extends Component {
   }
 
   handleChange(e,qid,index){
+    const url = new URL(document.URL);
+    const params =  new URLSearchParams(url.search.slice(1));
+    const uid = params.get('uid');
+
     this.state.marks[index] = {
       score:e.target.value,
       qid:qid,
-      id:27
+      id:uid
     }
     this.setState(this.state);
   }
@@ -55,7 +60,8 @@ class Submission extends Component {
         .then((res)=>res.json())
         .then((res)=>{
           if(res["status"] === "success"){
-            console.log("Success");
+            console.log("Submission Success");
+            this.props.history.push('/admin/questionnaire/submissions');
           }
         }, (error)=>{
             console.log(error);

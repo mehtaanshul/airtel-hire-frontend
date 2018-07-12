@@ -8,6 +8,7 @@ class Questionnaire extends Component {
     super(props);
     this.state = {
       questionCount:'',
+      questionnairename:'',
       questions:[
         {
           type:'',
@@ -19,11 +20,13 @@ class Questionnaire extends Component {
       ],
       showAlert:false,
       submitting:false,
-      formErrors:false,
+      formErrors:"",
     };
     this.addQuestion = this.addQuestion.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.hideAlert = this.hideAlert.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
   }
 
   hideAlert(){
@@ -36,7 +39,7 @@ class Questionnaire extends Component {
       submitting:true
     });
 
-    let url = 'http://192.168.1.26:8080/questionnaires';
+    let url = 'http://192.168.1.26:8080/questionnaires?qname='+this.state.questionnairename;
     console.log(this.state.questions);
     fetch(url,{
          method: 'post',
@@ -53,6 +56,7 @@ class Questionnaire extends Component {
             this.setState({
               submitting:false,
               showAlert:true,
+              questionnairename:'',
               questions:[
                 {
                   type:'',
@@ -69,9 +73,50 @@ class Questionnaire extends Component {
         });
   }
 
+  validateForm(){
+
+    let requiredCheckFields = ["type", "marks","answer","qstatement"];
+
+    let field,i;
+
+    for(let j=0; j<this.state.questions; j++){
+      for(i=0;i<requiredCheckFields.length; i++){
+
+        field = requiredCheckFields[i];
+
+        if(this.state["questions"][j][field].trim().length === 0){
+          this.setState({
+            formErrors = "Select question type for all the questions";
+          });
+          break;
+        }
+      }
+      if(i<4){
+        break;
+      }
+      else if(this.state.["questions"][j]["type"] === "type"){
+        this.setState({
+          formErrors = "Select question type for all the questions";
+        });
+        break; 
+      }
+      else {
+        this.setState({
+          formErrors = "";
+        });
+      }
+
+    }
+
+  }
+
 
   handleChange(e, index){
     this.state["questions"][index][e.target.name] = e.target.value;
+    this.setState(this.state);
+  }
+  handleNameChange(e){
+    this.state["questionnairename"] = e.target.value;
     this.setState(this.state);
   }
 
@@ -156,7 +201,7 @@ class Questionnaire extends Component {
             <div className="col-md-3">
               <label className="float-left" >Question Type</label>
               <select value={this.state.questions[i]["type"]} name="type" onChange={(e) => this.handleChange(e,i)} className="custom-select">
-                  <option>Type</option>
+                  <option value="type" defaultValue>Type</option>
                   <option value="subjective">Subjective</option>
                   <option value="mcq">MCQ</option>
                   <option value="truefalse">True/False</option>
@@ -164,7 +209,7 @@ class Questionnaire extends Component {
             </div>
             <div className="col-md-3">
               <label className="float-left" >Question Marks</label>
-              <input type="text" name="marks" className="form-control" onChange={(e) => this.handleChange(e,i)} value={this.state.questions[i]["marks"]} />
+              <input type="number" name="marks" className="form-control" onChange={(e) => this.handleChange(e,i)} value={this.state.questions[i]["marks"]} />
             </div>
           </div>
           <div className="row mt-4">
@@ -217,6 +262,12 @@ class Questionnaire extends Component {
         <div className="container mt-4">
           {this.state.showAlert && this.renderAlert()}
           <h3 className="text-left">Create Questionnaire</h3>
+          <div className="row mt-4">
+            <div className="col-md-4">
+              <label className="float-left">Questionnaire Name</label>
+              <input type="text" name="questionnairename" class="form-control" onChange={this.handleNameChange} value={this.state.questionnairename}/>
+            </div>
+          </div>
           {this.renderQuestions()}
           <div className="row mt-4">
             <div className="col-md-2">
