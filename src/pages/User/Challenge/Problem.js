@@ -24,8 +24,8 @@ class Problem extends Component {
     const params = new URLSearchParams(url.search.slice(1));
     const pid = params.get('pid');
 
-    let fetchurl = 'http://192.168.1.26:8080/problem/'+pid;
-    let furl = 'http://192.168.1.26:8080/checksubmissionstatus';
+    let fetchurl = 'http://192.168.1.5:8080/problem/'+pid;
+    let furl = 'http://192.168.1.5:8080/checksubmissionstatus';
 
     let user = JSON.parse(sessionStorage.getItem("user"));
     
@@ -78,7 +78,7 @@ class Problem extends Component {
       submitStatus:1
     })
 
-    let furl = 'http://192.168.1.26:8080/submission';
+    let furl = 'http://192.168.1.5:8080/submission';
 
     let user = JSON.parse(sessionStorage.getItem("user"));
 

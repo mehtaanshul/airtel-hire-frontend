@@ -47,7 +47,7 @@ class LoginModal extends Component {
       return;
     }
 
-    let url = 'http://192.168.1.26:8080/login' ;
+    let url = 'http://192.168.1.5:8080/login' ;
 
     fetch(url,{
          method: 'post',

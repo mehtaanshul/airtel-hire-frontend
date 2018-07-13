@@ -26,7 +26,7 @@ class Problem extends Component {
   componentDidMount() {
 
     let user = JSON.parse(sessionStorage.getItem("user"));
-    let url = 'http://192.168.1.26:8080/users/'+user["uid"];
+    let url = 'http://192.168.1.5:8080/users/'+user["uid"];
     
     fetch(url)
         .then(res => res.json())
@@ -54,7 +54,7 @@ class Problem extends Component {
   onSubmit(){
 
     let user = JSON.parse(sessionStorage.getItem("user"));
-    let url = 'http://192.168.1.26:8080/update/'+user["uid"];
+    let url = 'http://192.168.1.5:8080/update/'+user["uid"];
 
     const formData = new FormData();
 

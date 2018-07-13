@@ -82,7 +82,7 @@ class NewChallenge extends Component {
 
     this.setState({submitting:true});
 
-    let url = 'http://192.168.1.26:8080/challenges';
+    let url = 'http://192.168.1.5:8080/challenges';
 
     const formData = new FormData();
     formData.append('banner',this.state.banner);

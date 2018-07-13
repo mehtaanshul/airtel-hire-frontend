@@ -20,7 +20,7 @@ class Challenge extends Component {
     const type = params.get('type');
     const cid = params.get('cid');
 
-    let fetchurl = 'http://192.168.1.26:8080/challenges/'+cid;
+    let fetchurl = 'http://192.168.1.5:8080/challenges/'+cid;
     
     fetch(fetchurl)
         .then(res => res.json())
@@ -97,7 +97,7 @@ class Challenge extends Component {
       return (
         <div className="complete-body">
           <Header ref={instance => { this.child = instance; }} />
-          <img src={'http://192.168.1.26:8080/img/'+this.state.challengeDetails.cid} className="w-100" alt=""/>
+          <img src={'http://192.168.1.5:8080/img/'+this.state.challengeDetails.cid} className="w-100" alt=""/>
           <div className="jumbotron text-left">
           {this.state.challengeDetails.category == 'live'  && this.renderLive()}
           {this.state.challengeDetails.category == 'upcoming' && this.renderRegister()}

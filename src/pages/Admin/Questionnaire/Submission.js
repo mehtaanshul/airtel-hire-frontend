@@ -18,7 +18,7 @@ class Submission extends Component {
     const questionnaireid = params.get('questionnaireid');
     const uid = params.get('uid');
 
-    let fetchurl = 'http://192.168.1.26:8080/subjective/'+uid+'/'+questionnaireid;
+    let fetchurl = 'http://192.168.1.5:8080/subjective/'+uid+'/'+questionnaireid;
     fetch(fetchurl)
       .then(res => res.json())
       .then((result) => {
@@ -47,9 +47,13 @@ class Submission extends Component {
   onSubmit(){
     console.log(JSON.stringify(this.state.marks));
 
-    let url = 'http://192.168.1.26:8080/scoreOfSubjective';
+    const url = new URL(document.URL);
+    const params =  new URLSearchParams(url.search.slice(1));
+    const questionnaireid = params.get('questionnaireid');
 
-    fetch(url,{
+    let furl = 'http://192.168.1.5:8080/scoreOfSubjective';
+
+    fetch(furl,{
          method: 'post',
          headers: {
           "Accept": "application/json",
@@ -61,7 +65,7 @@ class Submission extends Component {
         .then((res)=>{
           if(res["status"] === "success"){
             console.log("Submission Success");
-            this.props.history.push('/admin/questionnaire/submissions');
+            this.props.history.push('/admin/questionnaire/submissions?questionnaireid='+questionnaireid);
           }
         }, (error)=>{
             console.log(error);

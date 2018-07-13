@@ -18,12 +18,13 @@ class Submissions extends Component {
   handleChange(e){
     this.state[e.target.name] = e.target.value;
     this.setState(this.state);
+    this.onSubmit();
   }
 
   componentDidMount(){
     
-    let url = 'http://192.168.1.26:8080/allQuestionnaires';
-    fetch(url)
+    let furl = 'http://192.168.1.5:8080/allQuestionnaires';
+    fetch(furl)
       .then(res => res.json())
       .then((result) => {
         console.log("Questionnaires",result);
@@ -34,11 +35,25 @@ class Submissions extends Component {
         }, (error) => {
           console.log(error);
       });
+
+    const url = new URL(document.URL);
+    const params =  new URLSearchParams(url.search.slice(1));
+    const questionnaireid = params.get('questionnaireid');
+    if(questionnaireid){
+      this.state["questionnaireId"] = questionnaireid;
+      this.setState(this.state);
+      console.log(this.state.questionnaireId);
+      this.onSubmit();
+    }
   }
 
   onSubmit(){
     
-    let url = 'http://192.168.1.26:8080/QuestionnaireSubmissions/'+this.state.questionnaireId;
+    this.setState({
+      loading:true
+    })
+
+    let url = 'http://192.168.1.5:8080/QuestionnaireSubmissions/'+this.state.questionnaireId;
 
     fetch(url)
       .then(res => res.json())
@@ -46,10 +61,55 @@ class Submissions extends Component {
         console.log("Submissions",result);
         this.setState({
           submissions:result,
+          loading:false
         });
         }, (error) => {
           console.log(error);
       });
+  }
+
+  renderSubmissionsTable(){
+    if(this.state.submissions.length){
+      return(
+        <table className="table mt-4">
+          <thead>
+            <tr>
+              <th scope="col">User Id</th>
+              <th scope="col">User name</th>
+              <th scope="col">Score</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.submissions.map((submission,index)=>{
+              return(
+                <tr key={index} >
+                  <th>{submission.uid}</th>
+                  <td>{submission.uname}</td>
+                  <td> {submission.score}</td>
+                  <td> 
+                    { submission.isfinal ? "Final Score" :
+                      (<a 
+                      href={"/admin/questionnaire/submission?questionnaireid="+this.state.questionnaireId+"&uid="+submission.uid} 
+                      className="btn btn-outline-info btn-sm"
+                      >
+                      Evaluate
+                      </a>)
+                    } 
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      );
+    }
+    else {
+      return(
+        <h5 className="mt-4"> No Submissions Yet</h5>
+      );
+    }
+    
   }
 
 
@@ -82,43 +142,7 @@ class Submissions extends Component {
                 ))}
               </select>
             </div>
-            <div className="col-lg-2 mt-4">
-              <button 
-                type="button" 
-                onClick={this.onSubmit} 
-                className="btn btn-info btn-block"
-                disabled={this.state.questionnaireId === "notselected" ? "disabled" : ""}
-              >
-                Submit
-              </button>
-            </div>
-            <table className="table mt-4">
-              <thead>
-                <tr>
-                  <th scope="col">User Id</th>
-                  <th scope="col">User name</th>
-                  <th scope="col">Score</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.submissions.map((submission,index)=>{
-                  return(
-                    <tr key={index} >
-                      <th>{submission.uid}</th>
-                      <td>{submission.uname}</td>
-                      <td> {submission.score}</td>
-                      <td> 
-                        <a 
-                          href={"/admin/questionnaire/submission?questionnaireid="+this.state.questionnaireId+"&uid="+submission.uid} 
-                          className="btn btn-outline-info btn-sm">Evaluate
-                        </a> 
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            {this.state.questionnaireid === "notselected" ? "" : this.renderSubmissionsTable()}
           </div>
         </div>
       );

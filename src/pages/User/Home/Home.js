@@ -20,7 +20,7 @@ class Home extends Component {
 
   componentDidMount() {
 
-    let url = 'http://192.168.1.26:8080/challenges';
+    let url = 'http://192.168.1.5:8080/challenges';
     fetch(url)
         .then(res => res.json())
         .then((result) => {

@@ -44,7 +44,7 @@ class RegisterModal extends Component {
       return;
     }
 
-    let url = 'http://192.168.1.26:8080/register' ;
+    let url = 'http://192.168.1.5:8080/register' ;
 
     fetch(url,{
          method: 'post',

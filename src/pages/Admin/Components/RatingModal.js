@@ -42,7 +42,7 @@ class RatingModal extends Component {
       return;
     }
 
-    let url = 'http://192.168.1.26:8080/scores/'+this.props.userId;
+    let url = 'http://192.168.1.5:8080/scores/'+this.props.userId;
 
     fetch(url,{
      method: 'post',

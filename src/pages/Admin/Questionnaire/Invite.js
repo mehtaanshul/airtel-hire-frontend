@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
+import loader from '../../../img/loader.svg';
 
 class Invite extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class Invite extends Component {
       name:'',
       showAlert:false,
       submitting:false,
+      loading:true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -39,13 +41,14 @@ class Invite extends Component {
 
   componentDidMount(){
     
-    let url = 'http://192.168.1.26:8080/allQuestionnaires';
+    let url = 'http://192.168.1.5:8080/allQuestionnaires';
     fetch(url)
       .then(res => res.json())
       .then((result) => {
         console.log("Questionnaires",result);
         this.setState({
           questionnaires:result,
+          loading:false
         });
         }, (error) => {
           console.log(error);
@@ -56,7 +59,7 @@ class Invite extends Component {
     this.setState({
       submitting:true
     })
-    let url = 'http://192.168.1.26:8080/sendmail';
+    let url = 'http://192.168.1.5:8080/sendmail';
     let link = 'http://localhost:3000/questionnaire/login?id='+this.state.questionnaireId;
     
     const formdata = new FormData();
@@ -84,47 +87,59 @@ class Invite extends Component {
 
 
   render() {
-    return (
-      <div className="complete-body">
+    if(this.state.loading){
+      return (
+        <div>
         <Header/>
-        <div className="container mt-4">
-          {this.state.showAlert && this.renderAlert()}
-          <div className="row">
-            <div className="col-lg-6">
-              <label className="float-left">Questionnaire</label>
-              <select 
-                onChange={this.handleChange} 
-                name="questionnaireId" 
-                value={this.state.questionnaireId} 
-                className="custom-select"
-              >
-                <option defaultValue>Select questionnaire</option>
-                {this.state.questionnaires.map((questionnaire)=> (
-                  <option key={questionnaire.questionnaireid} value={questionnaire.questionnaireid}>{questionnaire.qname}</option>  
-                ))}
-              </select>
-            </div>
+          <div className="loader-svg">
+            <img src={loader}/>
           </div>
-          <div className="row mt-4">
-            <div className="col-md-6">
-              <label className="float-left">Full name</label>
-              <input type="text" name="name" onChange={this.handleChange} className="form-control" placeholder="Enter Full name" value={this.state.name}/>
+        </div>
+      );
+    }
+    else {
+      return (
+        <div className="complete-body">
+          <Header/>
+          <div className="container mt-4">
+            {this.state.showAlert && this.renderAlert()}
+            <div className="row">
+              <div className="col-lg-6">
+                <label className="float-left">Questionnaire</label>
+                <select 
+                  onChange={this.handleChange} 
+                  name="questionnaireId" 
+                  value={this.state.questionnaireId} 
+                  className="custom-select"
+                >
+                  <option defaultValue>Select questionnaire</option>
+                  {this.state.questionnaires.map((questionnaire)=> (
+                    <option key={questionnaire.questionnaireid} value={questionnaire.questionnaireid}>{questionnaire.qname}</option>  
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="row mt-4">
-            <div className="col-md-6">
-              <label className="float-left">Email</label>
-              <input type="text" name="email" onChange={this.handleChange} className="form-control" placeholder="Enter email" value={this.state.email}/>
+            <div className="row mt-4">
+              <div className="col-md-6">
+                <label className="float-left">Full name</label>
+                <input type="text" name="name" onChange={this.handleChange} className="form-control" placeholder="Enter Full name" value={this.state.name}/>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-md-3 mt-4">
-              <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">{this.state.submitting ? "Inviting..." : "Invite"}</button>
+            <div className="row mt-4">
+              <div className="col-md-6">
+                <label className="float-left">Email</label>
+                <input type="text" name="email" onChange={this.handleChange} className="form-control" placeholder="Enter email" value={this.state.email}/>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-3 mt-4">
+                <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">{this.state.submitting ? "Inviting..." : "Invite"}</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      ); 
+    }
   }
 }
 

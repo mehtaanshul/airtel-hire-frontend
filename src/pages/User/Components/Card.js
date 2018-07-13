@@ -49,7 +49,7 @@ class Card extends Component {
 
     return (
       <div className="card mb-4">
-        <img className="card-img-top" src={'http://192.168.1.26:8080/img/'+this.props.cid} alt="Card"/>
+        <img className="card-img-top" src={'http://192.168.1.5:8080/img/'+this.props.cid} alt="Card"/>
         <div className="card-body">
           <small>{this.props.type}</small>
           <Link className="link-style" to={'/challenge?cid='+this.props.cid}><h5 >{this.props.name}</h5></Link>

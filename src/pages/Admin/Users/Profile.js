@@ -18,7 +18,7 @@ class Profile extends Component {
     const type = params.get('type');
     var uid = params.get('uid');
     
-    let furl = 'http://192.168.1.26:8080/users/'+uid;
+    let furl = 'http://192.168.1.5:8080/users/'+uid;
     
     fetch(furl)
         .then(res => res.json())
@@ -33,7 +33,7 @@ class Profile extends Component {
   }
 
   downloadFile(uid){
-    let url='http://192.168.1.26:8080/resume/'+uid;
+    let url='http://192.168.1.5:8080/resume/'+uid;
     window.open(url, '_blank');
   }
 

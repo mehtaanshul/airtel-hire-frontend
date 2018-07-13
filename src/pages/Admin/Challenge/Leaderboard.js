@@ -12,7 +12,7 @@ class AdminLeaderboard extends Component {
     const params = new URLSearchParams(url.search.slice(1));
     const type = params.get('type');
     const cid = params.get('cid');
-    let furl = 'http://192.168.1.26:8080/score/'+cid;
+    let furl = 'http://192.168.1.5:8080/score/'+cid;
     fetch(furl)
         .then(res => res.json())
         .then((result) => {

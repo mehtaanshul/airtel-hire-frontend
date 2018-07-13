@@ -19,7 +19,7 @@ class Problems extends Component {
     const type = params.get('type');
     var cid = params.get('cid');
 
-    let fetchurl = 'http://192.168.1.26:8080/problems/'+cid;
+    let fetchurl = 'http://192.168.1.5:8080/problems/'+cid;
     
     fetch(fetchurl)
         .then(res => res.json())

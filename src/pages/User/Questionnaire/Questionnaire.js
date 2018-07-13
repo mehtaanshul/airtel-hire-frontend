@@ -10,7 +10,7 @@ class Questionnaire extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading:false,
+      loading:true,
       questions:[],
       answers:[],
       submitting: false,
@@ -20,28 +20,14 @@ class Questionnaire extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount(){
+  componentWillMount(){
 
     let user = JSON.parse(sessionStorage['user']);
     const url = new URL(document.URL);
     const params =  new URLSearchParams(url.search.slice(1));
     const questionnaireid = params.get('id');
 
-    let furl = 'http://192.168.1.26:8080/questionnaires/'+questionnaireid;
-    
-    fetch(furl)
-        .then(res => res.json())
-        .then((result) => {
-          console.log("questions",result);
-          this.setState({
-            questions:result,
-            loading:false,
-          });
-        }, (error) => {
-            console.log(error);
-        });
-
-    let fetchurl = 'http://192.168.1.26:8080/checksubmissionstatus/'+user['uid']+'/'+questionnaireid;
+    let fetchurl = 'http://192.168.1.5:8080/checksubmissionstatus/'+user['uid']+'/'+questionnaireid;
 
     fetch(fetchurl)
     .then(res => res.json())
@@ -49,9 +35,34 @@ class Questionnaire extends Component {
       if(result['status'] == 'success'){
         this.setState({
           submissionStatus:true,
+          loading:false,
         })
       }
+      else {
+        this.fetchQuestionnaires();
+      }
     })
+  }
+
+  fetchQuestionnaires(){
+    
+    const url = new URL(document.URL);
+    const params =  new URLSearchParams(url.search.slice(1));
+    const questionnaireid = params.get('id');
+
+    let furl = 'http://192.168.1.5:8080/questionnaires/'+questionnaireid;
+    
+    fetch(furl)
+    .then(res => res.json())
+    .then((result) => {
+      console.log("questions",result);
+      this.setState({
+        questions:result,
+        loading:false
+      });
+    }, (error) => {
+        console.log(error);
+    });
   }
 
   onSubmit(){
@@ -62,7 +73,7 @@ class Questionnaire extends Component {
       submitting:true
     });
 
-    let url = 'http://192.168.1.26:8080/submissionFromQuestionnaire';
+    let url = 'http://192.168.1.5:8080/submissionFromQuestionnaire';
 
     fetch(url,{
          method: 'post',
@@ -120,7 +131,7 @@ class Questionnaire extends Component {
         )}            
         <div className="row">
           <div className="col-lg-3 questionnaire-button">
-            <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">Submit</button>
+            <button type="button" onClick={this.onSubmit} className="btn btn-success btn-block">{this.state.submitting ? "Submitting..." : "Submit"}</button>
           </div>
         </div>
       </div>
@@ -137,9 +148,8 @@ class Questionnaire extends Component {
 
   render() {
     
-    let user = JSON.parse(sessionStorage['user']);
 
-    if(!sessionStorage['user'] || user['type'] !== 'questionnaire'){
+    if(!sessionStorage['user'] || JSON.parse(sessionStorage['user'])['type'] !== 'questionnaire'){
       const url = new URL(document.URL);
       const params = new URLSearchParams(url.search.slice(1));
       const id = params.get('id');

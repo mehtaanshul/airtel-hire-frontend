@@ -35,11 +35,20 @@ class Questionnaire extends Component {
 
   onSubmit(e){
 
+    console.log(this.state.questions);
+    this.validateForm();
+
+    if(this.state.formErrors.trim().length !== 0){
+      console.log("form validation error");
+      e.preventDefault();
+      return;
+    }
+
     this.setState({
       submitting:true
     });
 
-    let url = 'http://192.168.1.26:8080/questionnaires?qname='+this.state.questionnairename;
+    let url = 'http://192.168.1.5:8080/questionnaires?qname='+this.state.questionnairename;
     console.log(this.state.questions);
     fetch(url,{
          method: 'post',
@@ -75,38 +84,68 @@ class Questionnaire extends Component {
 
   validateForm(){
 
-    let requiredCheckFields = ["type", "marks","answer","qstatement"];
+    if(this.state.questionnairename.trim().length === 0){
+      this.state.formErrors = "Please enter questionnaire name";
+      this.setState(this.state);
+      return;
+    }
+    let requiredCheckFields = ["type", "marks","qstatement"];
 
     let field,i;
 
-    for(let j=0; j<this.state.questions; j++){
+    for(let j=0; j<this.state.questions.length; j++){
+      
       for(i=0;i<requiredCheckFields.length; i++){
 
         field = requiredCheckFields[i];
 
         if(this.state["questions"][j][field].trim().length === 0){
-          this.setState({
-            formErrors = "Select question type for all the questions";
-          });
-          break;
+          this.state.formErrors = "Please fill all the fields";
+          this.setState(this.state);
+          return;
         }
       }
-      if(i<4){
-        break;
+
+      if(this.state["questions"][j]["marks"] > 100){
+        this.state.formErrors = "Max marks for a question is 100";
+        this.setState(this.state);
+        return;
       }
-      else if(this.state.["questions"][j]["type"] === "type"){
-        this.setState({
-          formErrors = "Select question type for all the questions";
-        });
-        break; 
+
+      else if(this.state["questions"][j]["type"] === "type"){
+        this.state.formErrors = "Select question type for all the questions";
+        this.setState(this.state);
+        return; 
       }
-      else {
-        this.setState({
-          formErrors = "";
-        });
+
+      else if((this.state.questions[j]["type"] === "mcq" || this.state.questions[j]["type"] === "truefalse") && this.state.questions[j]["answer"].trim().length === 0){
+        this.state.formErrors = "Enter answer for every question";
+        this.setState(this.state);
+        return;
+      }
+
+      else if(this.state.questions[j]["type"] === "mcq"){
+        if(this.state.questions[j]["options"].length < 2){
+          this.state.formErrors = "Add atleast 2 options for every MCQ.";
+          this.setState(this.state);  
+          return;
+        }
+
+        else {
+          for(let k=0;k<this.state.questions[j]["answer"].length;k++){
+            if(this.state.questions[j]["options"][k].trim().length === 0){
+              this.state.formErrors = "Please fill all the fields.";
+              this.setState(this.state);  
+              return;
+            }
+          }
+        }
       }
 
     }
+    
+    this.state.formErrors = "";
+    this.setState(this.state);
 
   }
 
@@ -156,7 +195,7 @@ class Questionnaire extends Component {
     let items = [];
     for(let i=0;i<this.state.questions[index]["options"].length;i++){
       items.push(
-        <div className="mt-2">
+        <div key={i} className="mt-2">
           <label className="float-left">{"Option "+(i+1)}</label>
           <textarea rows="2" value={this.state.questions[index]["options"][i]} name="options" className="form-control mt-2" onChange={(e) => this.handleOptionsChange(e,index,i)} value={this.state.questions[index]["options"][i]}/>
         </div>
@@ -233,7 +272,7 @@ class Questionnaire extends Component {
               <div className="row mt-4">
                 <div className="col-md-3">
                   <label className="float-left">Answer</label>
-                  <input type="text" name="answer" class="form-control" onChange={(e) => this.handleChange(e,i)} value={this.state.questions[i]["answer"]} placeholder={this.state.questions[i]["type"] === 'truefalse' ? "1 for true , 2 for false" : "Enter 1 for option 1 and so on"} />
+                  <input type="text" name="answer" className="form-control" onChange={(e) => this.handleChange(e,i)} value={this.state.questions[i]["answer"]} placeholder={this.state.questions[i]["type"] === 'truefalse' ? "1 for true , 2 for false" : "Enter 1 for option 1 and so on"} />
                 </div>
               </div>
             ) : null
@@ -265,16 +304,21 @@ class Questionnaire extends Component {
           <div className="row mt-4">
             <div className="col-md-4">
               <label className="float-left">Questionnaire Name</label>
-              <input type="text" name="questionnairename" class="form-control" onChange={this.handleNameChange} value={this.state.questionnairename}/>
+              <input type="text" name="questionnairename" className="form-control" onChange={this.handleNameChange} value={this.state.questionnairename}/>
             </div>
           </div>
           {this.renderQuestions()}
           <div className="row mt-4">
             <div className="col-md-2">
-            <button type="button" onClick={this.addQuestion} className="btn btn-info">Add another question</button>
+              <button type="button" onClick={this.addQuestion} className="btn btn-info">Add another question</button>
             </div>
           </div>
-          <button type="button" onClick={this.onSubmit} className="btn btn-success float-left mt-4">Submit Questionnaire</button>
+          <div className="row">
+            <div className="col-md-2">
+              <button type="button" onClick={this.onSubmit} className="btn btn-success float-left mt-4">Submit Questionnaire</button>
+            </div>
+          </div>
+          <small className="float-left" >{this.state.formErrors}</small>
         </div>
       </div>
     );

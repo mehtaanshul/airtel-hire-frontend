@@ -17,7 +17,7 @@ class Leaderboard extends Component {
     const cid = params.get('cid');
 
     let user = JSON.parse(sessionStorage.getItem('user'));
-    let furl = 'http://192.168.1.26:8080/score/'+cid;
+    let furl = 'http://192.168.1.5:8080/score/'+cid;
     fetch(furl)
         .then(res => res.json())
         .then((result) => {

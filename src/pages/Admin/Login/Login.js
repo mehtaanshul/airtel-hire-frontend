@@ -27,7 +27,7 @@ class Login extends Component {
     }
 
 
-    let url = 'http://192.168.1.26:8080/adminlogin';
+    let url = 'http://192.168.1.5:8080/adminlogin';
 
     fetch(url,{
          method: 'post',

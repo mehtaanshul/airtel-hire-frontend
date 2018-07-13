@@ -22,7 +22,8 @@ class Submissions extends Component {
 
   handleChange(e){
     this.state[e.target.name] = e.target.value;
-    this.setState(this.state); 
+    this.setState(this.state);
+    this.onSubmit(); 
   }
 
   componentDidMount() {
@@ -31,7 +32,7 @@ class Submissions extends Component {
     const type = params.get('type');
     var cid = params.get('cid');
 
-    let fetchurl = 'http://192.168.1.26:8080/problems/'+cid;
+    let fetchurl = 'http://192.168.1.5:8080/problems/'+cid;
     
     fetch(fetchurl)
         .then(res => res.json())
@@ -49,32 +50,26 @@ class Submissions extends Component {
 
   onSubmit(){
 
-      let url = 'http://192.168.1.26:8080/allsubmissions/'+this.state.problemId;
-
+      let url = 'http://192.168.1.5:8080/allsubmissions/'+this.state.problemId;
+      this.setState({
+        loading:true,
+      })
       fetch(url)
         .then(res => res.json())
         .then((result) => {
           console.log("submissions",result);
-          if(result.length){
-            this.setState({
+          this.setState({
               showModal:false,
               submissions:result,
+              loading:false,
             });
-          }
-          else {
-            this.setState({
-              showModal:false,
-              submissions:result,
-            });
-          }
-          
         }, (error) => {
             console.log(error);
     });
   }
 
   downloadFile(uid){
-    let url='http://192.168.1.26:8080/file/'+uid+'/'+this.state.problemId;
+    let url='http://192.168.1.5:8080/file/'+uid+'/'+this.state.problemId;
     window.open(url, '_blank');
   }
 
@@ -114,7 +109,7 @@ class Submissions extends Component {
     }
     else {
       return(
-        <h5> No Submissions Yet</h5>
+        <h5 className="mt-4"> No Submissions Yet</h5>
       );
     }
     
@@ -145,16 +140,6 @@ class Submissions extends Component {
                   <option key={problem.pid} value={problem.pid}>{problem.probname}</option>  
                 ))}
               </select>
-            </div>
-            <div className="col-lg-2 mt-4">
-              <button 
-                type="button" 
-                onClick={this.onSubmit} 
-                className="btn btn-info btn-block"
-                disabled={this.state.problemId === "notselected" ? "disabled" : ""}
-              >
-                Submit
-              </button>
             </div>
             {this.state.problemId === "notselected" ? "" : this.renderSubmissionsTable()}
           </div>

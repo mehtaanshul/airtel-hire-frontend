@@ -15,7 +15,7 @@ class Users extends Component {
 
   componentWillMount() {
     
-    let url = 'http://192.168.1.26:8080/users'
+    let url = 'http://192.168.1.5:8080/users'
     
     fetch(url)
         .then(res => res.json())
@@ -36,7 +36,7 @@ class Users extends Component {
   }
 
   downloadFile(uid){
-    let url='http://192.168.1.26:8080/resume/'+uid;
+    let url='http://192.168.1.5:8080/resume/'+uid;
     window.open(url, '_blank');
   }
 
