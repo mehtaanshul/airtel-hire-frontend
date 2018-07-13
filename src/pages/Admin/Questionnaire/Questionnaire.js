@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Redirect } from 'react-router';
 
 class Questionnaire extends Component {
   constructor(props) {
@@ -295,6 +296,11 @@ class Questionnaire extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
+
     return (
       <div className="complete-body">
         <Header />

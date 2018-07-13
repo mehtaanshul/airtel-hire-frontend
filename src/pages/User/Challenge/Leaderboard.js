@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
+import { Redirect } from 'react-router';
 
 class Leaderboard extends Component {
   constructor(props) {
@@ -13,25 +14,30 @@ class Leaderboard extends Component {
   componentDidMount() {
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
-    const type = params.get('type');
     const cid = params.get('cid');
 
-    let user = JSON.parse(sessionStorage.getItem('user'));
-    let furl = 'http://192.168.1.5:8080/score/'+cid;
-    fetch(furl)
-        .then(res => res.json())
-        .then((result) => {
-          console.log(result);
-          this.setState({
-            leaderboard:result,
-            userid:user["uid"]
-          });
-        }, (error) => {
-            console.log(error);
-    });
+    if(sessionStorage['user']){
+      let user = JSON.parse(sessionStorage.getItem('user'));
+      let furl = 'http://192.168.1.5:8080/score/'+cid;
+      fetch(furl)
+          .then(res => res.json())
+          .then((result) => {
+            console.log(result);
+            this.setState({
+              leaderboard:result,
+              userid:user["uid"]
+            });
+          }, (error) => {
+              console.log(error);
+      });
+    }
   }
 
   render() {
+
+    if(!sessionStorage['user']){
+      return <Redirect to='/' />
+    }
 
     return (
       <div className="complete-body">

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import { Link } from "react-router-dom";
 import loader from '../../../img/loader.svg';
+import { Redirect } from 'react-router';
+
 
 class Challenge extends Component {
   constructor(props) {
@@ -81,6 +83,10 @@ class Challenge extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
 
 
     if(this.state.loading){

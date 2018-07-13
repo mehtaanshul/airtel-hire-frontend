@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import loader from '../../../img/loader.svg';
+import { Redirect } from 'react-router';
 
 class Profile extends Component {
   constructor(props) {
@@ -15,7 +16,6 @@ class Profile extends Component {
 
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
-    const type = params.get('type');
     var uid = params.get('uid');
     
     let furl = 'http://192.168.1.5:8080/users/'+uid;
@@ -38,13 +38,18 @@ class Profile extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
+    
     const { user } = this.state;
     if(this.state.loading){
       return(
         <div>
         <Header/>
           <div className="loader-svg">
-            <img src={loader}/>
+            <img alt="loader" src={loader}/>
           </div>
         </div>
       );
@@ -93,7 +98,7 @@ class Profile extends Component {
             </div>
             <div className="row">
               <div className="col-md-3">
-                <button type="button" onClick={() => this.downloadFile(user.id)} class="btn btn-info">Download Resume</button>
+                <button type="button" disabled={user.resume === null ? "disabled" : ""} onClick={() => this.downloadFile(user.id)} class="btn btn-info">Download Resume</button>
               </div>
             </div>
           </div>

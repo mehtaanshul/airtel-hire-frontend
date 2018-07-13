@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import loader from '../../../img/loader.svg';
+import { Redirect } from 'react-router';
 
 class Submissions extends Component {
   constructor(props) {
@@ -114,6 +115,11 @@ class Submissions extends Component {
 
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
+
     if(this.state.loading){
       return (
         <div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
+import { Redirect } from 'react-router';
 
 class Submission extends Component {
   constructor(props) {
@@ -74,6 +75,11 @@ class Submission extends Component {
 
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
+
     return (
       <div className="complete-body">
         <Header/>

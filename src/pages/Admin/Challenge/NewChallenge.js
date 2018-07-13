@@ -4,6 +4,7 @@ import Card from '../Components/Card';
 import sample from '../../../img/sample.png';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Redirect } from 'react-router';
 
 class NewChallenge extends Component {
   constructor(props) {
@@ -205,6 +206,10 @@ validateForm(){
 
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
 
     var toolbarOptions = [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons

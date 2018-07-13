@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import loader from '../../../img/loader.svg';
+import { Redirect } from 'react-router';
 
 class Users extends Component {
   constructor(props) {
@@ -41,6 +42,10 @@ class Users extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
 
     if(this.state.loading){
       return(
@@ -87,7 +92,7 @@ class Users extends Component {
                       <td className="text-left">{user.uname}</td>
                       <td className="text-left">{user.emailid}</td>
                       <td>
-                      <button type="button" onClick={() => this.downloadFile(user.id)} className="btn btn-info btn-sm mr-2">Download Resume</button>
+                      <button type="button" onClick={() => this.downloadFile(user.id)} className="btn btn-info btn-sm mr-2" disabled={user.resume === null ? "disabled" : ""} >Download Resume</button>
                       <a href={"/admin/user/profile?uid="+user.id} className="btn btn-info btn-sm">View Profile</a>
                       </td>
                     </tr>

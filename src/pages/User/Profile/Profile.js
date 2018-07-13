@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
+import { Redirect } from 'react-router';
 
 class Problem extends Component {
   constructor(props) {
@@ -24,6 +25,10 @@ class Problem extends Component {
   }
 
   componentDidMount() {
+
+    if(!sessionStorage['user']){
+      return;
+    }
 
     let user = JSON.parse(sessionStorage.getItem("user"));
     let url = 'http://192.168.1.5:8080/users/'+user["uid"];
@@ -79,6 +84,10 @@ class Problem extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['user']){
+      return <Redirect to='/' />
+    }
 
     return (
       <div className="complete-body">

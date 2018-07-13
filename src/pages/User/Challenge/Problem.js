@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import { Link } from "react-router-dom";
 import loader from '../../../img/loader.svg';
+import { Redirect } from 'react-router';
 
 class Problem extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ class Problem extends Component {
   }
 
   componentDidMount() {
+
+    if(!sessionStorage['user']){
+      return;
+    }
     
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
@@ -121,6 +126,10 @@ class Problem extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['user']){
+      return <Redirect to='/' />
+    }
 
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));

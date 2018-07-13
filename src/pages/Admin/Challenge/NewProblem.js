@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Redirect } from 'react-router';
 
 class NewProblem extends Component {
   constructor(props) {
@@ -132,6 +133,10 @@ class NewProblem extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
 
     var toolbarOptions = [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
+import { Redirect } from 'react-router';
+
 class AdminLeaderboard extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +12,6 @@ class AdminLeaderboard extends Component {
   componentDidMount() {
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
-    const type = params.get('type');
     const cid = params.get('cid');
     let furl = 'http://192.168.1.5:8080/score/'+cid;
     fetch(furl)
@@ -25,6 +26,11 @@ class AdminLeaderboard extends Component {
     });
   }
   render() {
+
+    if(!sessionStorage['admin']){
+      return <Redirect to='/admin/login/' />
+    }
+    
     return (
       <div className="complete-body">
         <Header />

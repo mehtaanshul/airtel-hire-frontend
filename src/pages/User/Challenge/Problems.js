@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import { Link } from "react-router-dom";
 import loader from '../../../img/loader.svg';
+import { Redirect } from 'react-router';
 
 class Problems extends Component {
   constructor(props) {
@@ -14,6 +15,11 @@ class Problems extends Component {
   }
 
   componentDidMount() {
+
+    if(!sessionStorage['user']){
+      return;
+    }
+
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
     const type = params.get('type');
@@ -36,6 +42,10 @@ class Problems extends Component {
   }
 
   render() {
+
+    if(!sessionStorage['user']){
+      return <Redirect to='/' />
+    }
 
     let problems = this.state.problems.map((problem) => 
       <Link to={'/problem?pid='+problem.pid} className="list-group-item list-group-item-action">{problem.probname}</Link> 

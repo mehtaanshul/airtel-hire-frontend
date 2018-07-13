@@ -20,28 +20,29 @@ class Questionnaire extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillMount(){
+  componentDidMount(){
+    if(sessionStorage['user']){
+      let user = JSON.parse(sessionStorage['user']);
+      const url = new URL(document.URL);
+      const params =  new URLSearchParams(url.search.slice(1));
+      const questionnaireid = params.get('id');
 
-    let user = JSON.parse(sessionStorage['user']);
-    const url = new URL(document.URL);
-    const params =  new URLSearchParams(url.search.slice(1));
-    const questionnaireid = params.get('id');
+      let fetchurl = 'http://192.168.1.5:8080/checksubmissionstatus/'+user['uid']+'/'+questionnaireid;
 
-    let fetchurl = 'http://192.168.1.5:8080/checksubmissionstatus/'+user['uid']+'/'+questionnaireid;
-
-    fetch(fetchurl)
-    .then(res => res.json())
-    .then((result) => {
-      if(result['status'] == 'success'){
-        this.setState({
-          submissionStatus:true,
-          loading:false,
-        })
-      }
-      else {
-        this.fetchQuestionnaires();
-      }
-    })
+      fetch(fetchurl)
+      .then(res => res.json())
+      .then((result) => {
+        if(result['status'] == 'success'){
+          this.setState({
+            submissionStatus:true,
+            loading:false,
+          })
+        }
+        else {
+          this.fetchQuestionnaires();
+        }
+      })
+    }
   }
 
   fetchQuestionnaires(){
