@@ -3,6 +3,7 @@ import Header from '../Components/Header';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Questionnaire extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class Questionnaire extends Component {
       submitting:true
     });
 
-    let url = 'http://192.168.1.5:8080/questionnaires?qname='+this.state.questionnairename;
+    let url = BASE_URL+'/questionnaires?qname='+this.state.questionnairename;
     console.log(this.state.questions);
     fetch(url,{
          method: 'post',

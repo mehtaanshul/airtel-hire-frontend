@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Leaderboard extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Leaderboard extends Component {
 
     if(sessionStorage['user']){
       let user = JSON.parse(sessionStorage.getItem('user'));
-      let furl = 'http://192.168.1.5:8080/score/'+cid;
+      let furl = BASE_URL+'/score/'+cid;
       fetch(furl)
           .then(res => res.json())
           .then((result) => {

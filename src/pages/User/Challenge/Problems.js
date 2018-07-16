@@ -3,6 +3,7 @@ import Header from '../Components/Header';
 import { Link } from "react-router-dom";
 import loader from '../../../img/loader.svg';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Problems extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Problems extends Component {
     const type = params.get('type');
     var cid = params.get('cid');
 
-    let fetchurl = 'http://192.168.1.5:8080/problems/'+cid;
+    let fetchurl = BASE_URL+'/problems/'+cid;
     
     fetch(fetchurl)
         .then(res => res.json())

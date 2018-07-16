@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import BASE_URL from '../../../config.js';
+
 
 class RatingModal extends Component {
   constructor(props) {
@@ -42,7 +44,7 @@ class RatingModal extends Component {
       return;
     }
 
-    let url = 'http://192.168.1.5:8080/scores/'+this.props.userId;
+    let url = BASE_URL+'/scores/'+this.props.userId;
 
     fetch(url,{
      method: 'post',

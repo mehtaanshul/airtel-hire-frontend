@@ -3,6 +3,7 @@ import Header from '../Components/Header';
 import Card from '../Components/Card';
 import sample from '../../../img/sample.png';
 import loader from '../../../img/loader.svg';
+import BASE_URL from '../../../config.js';
 
 class Home extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class Home extends Component {
 
   componentDidMount() {
 
-    let url = 'http://192.168.1.5:8080/challenges';
+    let url = BASE_URL+'/challenges';
     fetch(url)
         .then(res => res.json())
         .then((result) => {

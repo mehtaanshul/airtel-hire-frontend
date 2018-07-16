@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BASE_URL from '../../../config.js';
 
 class QuestionCount extends Component {
   constructor(props) {

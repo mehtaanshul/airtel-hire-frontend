@@ -5,6 +5,7 @@ import sample from '../../../img/sample.png';
 import { Link } from "react-router-dom";
 import { Redirect } from 'react-router';
 import loader from '../../../img/loader.svg';
+import BASE_URL from '../../../config.js';
 
 
 class Home extends Component {
@@ -23,7 +24,7 @@ class Home extends Component {
 
   componentDidMount() {
 
-    let url = 'http://192.168.1.5:8080/challenges'
+    let url = BASE_URL+'/challenges';
     
     fetch(url)
         .then(res => res.json())

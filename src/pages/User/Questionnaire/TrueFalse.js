@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BASE_URL from '../../../config.js';
 
 class TrueFalse extends Component {
   constructor(props){

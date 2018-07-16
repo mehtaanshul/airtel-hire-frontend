@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import logo from '../../../img/logo.png';
 import login from '../../../img/outline-person_outline-24px.svg';
 import LoginModal from './LoginModal'
-import RegisterModal from './RegisterModal'
+import RegisterModal from './RegisterModal';
+import BASE_URL from '../../../config.js';
 
 class Header extends Component {
   constructor(props){

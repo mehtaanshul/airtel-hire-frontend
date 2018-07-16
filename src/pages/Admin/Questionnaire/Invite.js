@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import loader from '../../../img/loader.svg';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Invite extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Invite extends Component {
 
   componentDidMount(){
     
-    let url = 'http://192.168.1.5:8080/allQuestionnaires';
+    let url = BASE_URL+'/allQuestionnaires';
     fetch(url)
       .then(res => res.json())
       .then((result) => {
@@ -71,7 +72,7 @@ class Invite extends Component {
     this.setState({
       submitting:true
     })
-    let url = 'http://192.168.1.5:8080/sendmail';
+    let url = BASE_URL+'/sendmail';
     let link = 'http://localhost:3000/questionnaire/login?id='+this.state.questionnaireId;
 
     fetch(url,{

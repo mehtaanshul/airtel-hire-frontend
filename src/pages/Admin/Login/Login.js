@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 
 class Login extends Component {
@@ -27,7 +28,7 @@ class Login extends Component {
     }
 
 
-    let url = 'http://192.168.1.5:8080/adminlogin';
+    let url = BASE_URL+'/adminlogin';
 
     fetch(url,{
          method: 'post',

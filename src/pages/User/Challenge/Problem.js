@@ -3,6 +3,7 @@ import Header from '../Components/Header';
 import { Link } from "react-router-dom";
 import loader from '../../../img/loader.svg';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Problem extends Component {
   constructor(props) {
@@ -30,8 +31,8 @@ class Problem extends Component {
     const params = new URLSearchParams(url.search.slice(1));
     const pid = params.get('pid');
 
-    let fetchurl = 'http://192.168.1.5:8080/problem/'+pid;
-    let furl = 'http://192.168.1.5:8080/checksubmissionstatus';
+    let fetchurl = BASE_URL+'/problem/'+pid;
+    let furl = BASE_URL+'/checksubmissionstatus';
 
     let user = JSON.parse(sessionStorage.getItem("user"));
     
@@ -91,7 +92,7 @@ class Problem extends Component {
       submitStatus:1
     })
 
-    let furl = 'http://192.168.1.5:8080/submission';
+    let furl = BASE_URL+'/submission';
 
     let user = JSON.parse(sessionStorage.getItem("user"));
 

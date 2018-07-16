@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import loader from '../../../img/loader.svg';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Users extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Users extends Component {
 
   componentWillMount() {
     
-    let url = 'http://192.168.1.5:8080/users'
+    let url = BASE_URL+'/users'
     
     fetch(url)
         .then(res => res.json())
@@ -37,7 +38,7 @@ class Users extends Component {
   }
 
   downloadFile(uid){
-    let url='http://192.168.1.5:8080/resume/'+uid;
+    let url=BASE_URL+'/resume/'+uid;
     window.open(url, '_blank');
   }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import sample from '../../../img/sample.png';
+import BASE_URL from '../../../config.js';
 
 class Card extends Component {
   renderLive(){
@@ -49,7 +50,7 @@ class Card extends Component {
 
     return (
       <div className="card mb-4">
-        <img className="card-img-top" src={'http://192.168.1.5:8080/img/'+this.props.cid} alt="Card"/>
+        <img className="card-img-top" src={BASE_URL+'/img/'+this.props.cid} alt="Card"/>
         <div className="card-body">
           <small>{this.props.type}</small>
           <Link className="link-style" to={'/challenge?cid='+this.props.cid}><h5 >{this.props.name}</h5></Link>

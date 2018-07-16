@@ -5,6 +5,7 @@ import sample from '../../../img/sample.png';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class NewChallenge extends Component {
   constructor(props) {
@@ -83,7 +84,7 @@ class NewChallenge extends Component {
 
     this.setState({submitting:true});
 
-    let url = 'http://192.168.1.5:8080/challenges';
+    let url = BASE_URL+'/challenges';
 
     const formData = new FormData();
     formData.append('banner',this.state.banner);

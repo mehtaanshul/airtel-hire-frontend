@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import loader from '../../../img/loader.svg';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Profile extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class Profile extends Component {
     const params = new URLSearchParams(url.search.slice(1));
     var uid = params.get('uid');
     
-    let furl = 'http://192.168.1.5:8080/users/'+uid;
+    let furl = BASE_URL+'/users/'+uid;
     
     fetch(furl)
         .then(res => res.json())
@@ -33,7 +34,7 @@ class Profile extends Component {
   }
 
   downloadFile(uid){
-    let url='http://192.168.1.5:8080/resume/'+uid;
+    let url=BASE_URL+'/resume/'+uid;
     window.open(url, '_blank');
   }
 

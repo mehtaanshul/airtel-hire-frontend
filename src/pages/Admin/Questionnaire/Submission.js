@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Submission extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Submission extends Component {
     const questionnaireid = params.get('questionnaireid');
     const uid = params.get('uid');
 
-    let fetchurl = 'http://192.168.1.5:8080/subjective/'+uid+'/'+questionnaireid;
+    let fetchurl = BASE_URL+'/subjective/'+uid+'/'+questionnaireid;
     fetch(fetchurl)
       .then(res => res.json())
       .then((result) => {
@@ -52,7 +53,7 @@ class Submission extends Component {
     const params =  new URLSearchParams(url.search.slice(1));
     const questionnaireid = params.get('questionnaireid');
 
-    let furl = 'http://192.168.1.5:8080/scoreOfSubjective';
+    let furl = BASE_URL+'/scoreOfSubjective';
 
     fetch(furl,{
          method: 'post',

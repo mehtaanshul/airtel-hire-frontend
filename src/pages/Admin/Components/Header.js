@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../../../img/logo.png';
+import BASE_URL from '../../../config.js';
 
 class Header extends Component {
   constructor(props){

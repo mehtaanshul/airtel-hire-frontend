@@ -3,6 +3,7 @@ import Header from '../Components/Header';
 import sample from '../../../img/banner.gif';
 import { Link } from "react-router-dom";
 import loader from '../../../img/loader.svg';
+import BASE_URL from '../../../config.js';
 
 class Challenge extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class Challenge extends Component {
     const type = params.get('type');
     const cid = params.get('cid');
 
-    let fetchurl = 'http://192.168.1.5:8080/challenges/'+cid;
+    let fetchurl = BASE_URL+'/challenges/'+cid;
     
     fetch(fetchurl)
         .then(res => res.json())
@@ -99,7 +100,7 @@ class Challenge extends Component {
       return (
         <div className="complete-body">
           <Header ref={instance => { this.child = instance; }} />
-          <img src={'http://192.168.1.5:8080/img/'+this.state.challengeDetails.cid} className="w-100" alt=""/>
+          <img src={BASE_URL+'/img/'+this.state.challengeDetails.cid} className="w-100" alt=""/>
           <div className="jumbotron text-left">
           {this.state.challengeDetails.category == 'live' && user && this.renderLive()}
           {this.state.challengeDetails.category == 'live' && !user && this.renderLogin()}

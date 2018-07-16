@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BASE_URL from '../../../config.js';
 
 class RegisterModal extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class RegisterModal extends Component {
       return;
     }
 
-    let url = 'http://192.168.1.5:8080/register' ;
+    let url = BASE_URL+'/register' ;
 
     fetch(url,{
          method: 'post',

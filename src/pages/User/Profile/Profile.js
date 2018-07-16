@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Problem extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class Problem extends Component {
     }
 
     let user = JSON.parse(sessionStorage.getItem("user"));
-    let url = 'http://192.168.1.5:8080/users/'+user["uid"];
+    let url = BASE_URL+'/users/'+user["uid"];
     
     fetch(url)
         .then(res => res.json())
@@ -59,7 +60,7 @@ class Problem extends Component {
   onSubmit(){
 
     let user = JSON.parse(sessionStorage.getItem("user"));
-    let url = 'http://192.168.1.5:8080/update/'+user["uid"];
+    let url = BASE_URL+'/update/'+user["uid"];
 
     const formData = new FormData();
 

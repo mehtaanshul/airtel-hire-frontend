@@ -3,6 +3,7 @@ import Header from '../Components/Header';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class NewProblem extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class NewProblem extends Component {
   }
 
   componentDidMount() {
-    let url = 'http://192.168.1.5:8080/challenges';
+    let url = BASE_URL+'/challenges';
     fetch(url)
         .then(res => res.json())
         .then((result) => {
@@ -76,7 +77,7 @@ class NewProblem extends Component {
       submitting:true
     });
 
-    let url = 'http://192.168.1.5:8080/problems';
+    let url = BASE_URL+'/problems';
 
     fetch(url,{
          method: 'post',

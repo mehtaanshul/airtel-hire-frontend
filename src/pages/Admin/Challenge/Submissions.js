@@ -3,6 +3,7 @@ import Header from '../Components/Header';
 import RatingModal from '../Components/RatingModal';
 import loader from '../../../img/loader.svg';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Submissions extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class Submissions extends Component {
     const type = params.get('type');
     var cid = params.get('cid');
 
-    let fetchurl = 'http://192.168.1.5:8080/problems/'+cid;
+    let fetchurl = BASE_URL+'/problems/'+cid;
     
     fetch(fetchurl)
         .then(res => res.json())
@@ -51,7 +52,7 @@ class Submissions extends Component {
 
   onSubmit(){
 
-      let url = 'http://192.168.1.5:8080/allsubmissions/'+this.state.problemId;
+      let url = BASE_URL+'/allsubmissions/'+this.state.problemId;
       this.setState({
         loading:true,
       })
@@ -70,7 +71,7 @@ class Submissions extends Component {
   }
 
   downloadFile(uid){
-    let url='http://192.168.1.5:8080/file/'+uid+'/'+this.state.problemId;
+    let url=BASE_URL+'/file/'+uid+'/'+this.state.problemId;
     window.open(url, '_blank');
   }
 

@@ -5,6 +5,7 @@ import MCQ from './MCQ';
 import TrueFalse from './TrueFalse';
 import Subjective from './Subjective';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Questionnaire extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class Questionnaire extends Component {
       const params =  new URLSearchParams(url.search.slice(1));
       const questionnaireid = params.get('id');
 
-      let fetchurl = 'http://192.168.1.5:8080/checksubmissionstatus/'+user['uid']+'/'+questionnaireid;
+      let fetchurl = BASE_URL+'/checksubmissionstatus/'+user['uid']+'/'+questionnaireid;
 
       fetch(fetchurl)
       .then(res => res.json())
@@ -51,7 +52,7 @@ class Questionnaire extends Component {
     const params =  new URLSearchParams(url.search.slice(1));
     const questionnaireid = params.get('id');
 
-    let furl = 'http://192.168.1.5:8080/questionnaires/'+questionnaireid;
+    let furl = BASE_URL+'/questionnaires/'+questionnaireid;
     
     fetch(furl)
     .then(res => res.json())
@@ -74,7 +75,7 @@ class Questionnaire extends Component {
       submitting:true
     });
 
-    let url = 'http://192.168.1.5:8080/submissionFromQuestionnaire';
+    let url = BASE_URL+'/submissionFromQuestionnaire';
 
     fetch(url,{
          method: 'post',

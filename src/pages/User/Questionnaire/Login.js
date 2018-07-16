@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../../../img/logo.png';
+import BASE_URL from '../../../config.js';
 
 
 class Login extends Component {
@@ -27,7 +28,7 @@ class Login extends Component {
     }
 
 
-    let url = 'http://192.168.1.5:8080/login';
+    let url = BASE_URL+'/login';
 
     fetch(url,{
          method: 'post',

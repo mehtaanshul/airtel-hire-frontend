@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import loader from '../../../img/loader.svg';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class Submissions extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class Submissions extends Component {
 
   componentDidMount(){
     
-    let furl = 'http://192.168.1.5:8080/allQuestionnaires';
+    let furl = BASE_URL+'/allQuestionnaires';
     fetch(furl)
       .then(res => res.json())
       .then((result) => {
@@ -54,7 +55,7 @@ class Submissions extends Component {
       loading:true
     })
 
-    let url = 'http://192.168.1.5:8080/QuestionnaireSubmissions/'+this.state.questionnaireId;
+    let url = BASE_URL+'/QuestionnaireSubmissions/'+this.state.questionnaireId;
 
     fetch(url)
       .then(res => res.json())

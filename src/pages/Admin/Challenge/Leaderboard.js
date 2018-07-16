@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Components/Header';
 import { Redirect } from 'react-router';
+import BASE_URL from '../../../config.js';
 
 class AdminLeaderboard extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class AdminLeaderboard extends Component {
     const url = new URL(document.URL);
     const params = new URLSearchParams(url.search.slice(1));
     const cid = params.get('cid');
-    let furl = 'http://192.168.1.5:8080/scoreboard/'+cid;
+    let furl = BASE_URL+'/scoreboard/'+cid;
     fetch(furl)
         .then(res => res.json())
         .then((result) => {
