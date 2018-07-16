@@ -14,6 +14,7 @@ class Problem extends Component {
       loading:true,
       file:null,
       submitStatus:0,
+      formErrors:""
     };
     this.onFileChange = this.onFileChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -77,7 +78,14 @@ class Problem extends Component {
     this.setState({file:e.target.files[0]})
   }
 
-  onSubmit(){
+  onSubmit(e){
+
+    this.validateForm();
+    if(this.state.formErrors.trim().length !== 0){
+      e.preventDefault();
+      return;
+    }
+
 
     this.setState({
       submitStatus:1
@@ -116,6 +124,16 @@ class Problem extends Component {
 
   }
 
+  validateForm(){
+    if(this.state.file === null){
+      this.state.formErrors = "Please select a file.";
+    }
+    else {
+      this.state.formErrors = "";
+    }
+    this.setState(this.state);
+  }
+
   renderUpload(){
     return(
       <div className="form-group text-left">
@@ -123,6 +141,12 @@ class Problem extends Component {
         <input type="file" onChange={this.onFileChange} className="form-control-file"/>
       </div>
     );
+  }
+
+  componentDidUpdate(){
+    if(!this.state.loading){
+    document.getElementById('problem-statement').innerHTML = this.state.problem.probdetails;
+    }
   }
 
   render() {
@@ -162,20 +186,28 @@ class Problem extends Component {
               <hr/>
               <div className="text-left">
                 <h4>Problem Statement</h4>
-                {this.state.problem.probdetails}
+                <div id="problem-statement">
+                </div>
               </div>
             </div>
-            <div className="col-lg-4">
-              <form>
+            <div className="col-md-4">
                 {this.state.submitStatus === 0 && this.renderUpload()}
-                <button type="button" onClick={this.onSubmit} 
-                  disabled={this.state.submitStatus ? "disabled" : ""}
-                  className={this.state.submitStatus ? "btn btn-secondary float-left" : "btn btn-success float-left"}>
-                  {!this.state.submitStatus ? "Submit" : ""}
-                  {this.state.submitStatus === 1 ? "Submitting..." : ""}
-                  {this.state.submitStatus === 2 ? "Submitted" : ""}
-                </button>
-              </form>
+                <div className="row">
+                  <div className="col-md-6">
+                    <button type="button" onClick={this.onSubmit} 
+                      disabled={this.state.submitStatus ? "disabled" : ""}
+                      className={this.state.submitStatus ? "btn btn-secondary btn-block float-left" : "btn btn-success float-left btn-block"}>
+                      {!this.state.submitStatus ? "Submit" : ""}
+                      {this.state.submitStatus === 1 ? "Submitting..." : ""}
+                      {this.state.submitStatus === 2 ? "Submitted" : ""}
+                    </button>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <small className="text-left">{this.state.formErrors}</small>
+                  </div>
+                </div>
             </div>
           </div>
         </div>

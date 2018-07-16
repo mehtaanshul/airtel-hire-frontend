@@ -14,6 +14,7 @@ class Invite extends Component {
       showAlert:false,
       submitting:false,
       loading:true,
+      formErrors:{}
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -56,21 +57,33 @@ class Invite extends Component {
       });
   }
 
-  onSubmit(){
+  onSubmit(e){
+    
+    let emails = (this.state.email.replace(/ /g,'')).split(',');
+    
+    this.validateForm();
+
+    if(Object.keys(this.state.formErrors).length > 0){
+      e.preventDefault();
+      return;
+    }
+    
     this.setState({
       submitting:true
     })
     let url = 'http://192.168.1.5:8080/sendmail';
     let link = 'http://localhost:3000/questionnaire/login?id='+this.state.questionnaireId;
-    
-    const formdata = new FormData();
-    formdata.append('uname',this.state.name);
-    formdata.append('emailid',this.state.email);
-    formdata.append('link',link);
 
     fetch(url,{
          method: 'post',
-         body:formdata
+         headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+         },
+         body:JSON.stringify({
+          emails:emails,
+          link:link
+         })
         })
         .then((res)=>res.json())
         .then((res)=>{
@@ -84,6 +97,37 @@ class Invite extends Component {
             console.log(error);
         });
     
+  }
+
+  validateForm(){
+    
+    let emails = (this.state.email.replace(/ /g,'')).split(',');
+
+    if(this.state["questionnaireId"].trim().length === 0){
+      this.state.formErrors["questionnaireId"] = 'Please select a questionnaire';
+    }
+    else{
+      delete this.state.formErrors["questionnaireId"];
+    }
+    
+    const length = emails.length;
+    
+    for(let i=0;i<length;i++){
+      if(!this.validateEmail(emails[i])){
+        this.state.formErrors["emailid"] = "Invalid email";
+        break;
+      }
+      else{
+        delete this.state.formErrors['emailid'];
+      }
+    }
+
+    this.setState(this.state);
+
+  }
+
+  validateEmail(mail){
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail);
   }
 
 
@@ -118,23 +162,19 @@ class Invite extends Component {
                   value={this.state.questionnaireId} 
                   className="custom-select"
                 >
-                  <option defaultValue>Select questionnaire</option>
+                  <option value="" defaultValue>Select questionnaire</option>
                   {this.state.questionnaires.map((questionnaire)=> (
                     <option key={questionnaire.questionnaireid} value={questionnaire.questionnaireid}>{questionnaire.qname}</option>  
                   ))}
                 </select>
+                <small className="float-left">{this.state.formErrors["questionnaireId"]}</small>
               </div>
             </div>
             <div className="row mt-4">
               <div className="col-md-6">
-                <label className="float-left">Full name</label>
-                <input type="text" name="name" onChange={this.handleChange} className="form-control" placeholder="Enter Full name" value={this.state.name}/>
-              </div>
-            </div>
-            <div className="row mt-4">
-              <div className="col-md-6">
-                <label className="float-left">Email</label>
-                <input type="text" name="email" onChange={this.handleChange} className="form-control" placeholder="Enter email" value={this.state.email}/>
+                <label className="float-left">Email (Multiple emails separated by comma)</label>
+                <input type="text" name="email" onChange={this.handleChange} className="form-control" placeholder="example@gmail.com, abc@gmail.com" value={this.state.email}/>
+                <small className="float-left">{this.state.formErrors["emailid"]}</small>
               </div>
             </div>
             <div className="row">

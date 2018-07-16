@@ -19,6 +19,7 @@ class Header extends Component {
   }
 
   openLoginModal(){
+    window.scroll(0,0);
     this.setState({
       showLoginModal: true,
       showRegisterModal: false,
@@ -58,8 +59,6 @@ class Header extends Component {
       </div>
     ); 
   }
-  
-
 
   render() {
 

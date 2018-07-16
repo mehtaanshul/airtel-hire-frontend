@@ -319,12 +319,23 @@ class Questionnaire extends Component {
               <button type="button" onClick={this.addQuestion} className="btn btn-info">Add another question</button>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-2">
-              <button type="button" onClick={this.onSubmit} className="btn btn-success float-left mt-4">Submit Questionnaire</button>
+          <div className="row mt-4">
+            <div className="col-md-3">
+              <small className="float-left" >{this.state.formErrors}</small>
             </div>
           </div>
-          <small className="float-left" >{this.state.formErrors}</small>
+          <div className="row mb-4">
+            <div className="col-md-2">
+              <button 
+                type="button" 
+                onClick={this.onSubmit} 
+                className="btn btn-success float-left"
+                disabled={this.state.submitting ? "disabled" : ""}
+              >
+                {this.state.submitting ? "Submitting .." : "Submit Questionnaire"}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );

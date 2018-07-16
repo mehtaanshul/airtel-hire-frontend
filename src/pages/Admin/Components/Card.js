@@ -53,7 +53,7 @@ class Card extends Component {
         <img className="card-img-top" src={'http://192.168.1.5:8080/img/'+this.props.cid} alt=""/>
         <div className="card-body">
           <small>{this.props.type}</small>
-          <Link className="link-style" to={'/admin/challenge?cid='+this.props.cid}><h5 >{this.props.name}</h5></Link>
+          <Link className="link-style" to={'/admin/challenge?cid='+this.props.cid} ><h5 >{this.props.name}</h5></Link>
           {this.props.category === 'live' && this.renderLive()}
           {this.props.category === 'upcoming' && this.renderRegister()}
           {this.props.category === 'previous' && this.renderPrevious()}

@@ -133,8 +133,11 @@ getCurrentDate(){
     let date = new Date();
     let currentDate = date.getFullYear() + '-' + (((date.getMonth() + 1) < 10) ? "0" : "") + (date.getMonth() + 1) + '-' + ((date.getDate() < 10) ? "0" : "") + (date.getDate());
     return currentDate;
-    //let maxDate = date.getFullYear() + '-' + (((date.getMonth() + 1) < 10) ? "0" : "") + (date.getMonth() + 1) + '-' + (((date.getDate()+2) < 10) ? "0" : "") + (date.getDate()+2);
-    //let currentTime = ((date.getHours() < 10)?"0":"") + date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes();
+  }
+  getCurrentTime(){
+    let date = new Date();
+    let currentTime = ((date.getHours() < 10)?"0":"") + date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes();
+    return currentTime;
   }
 
 validateForm(){
@@ -158,9 +161,13 @@ validateForm(){
     if(this.state.banner === null){
       this.state.formErrors["banner"] = "Please upload challenge banner";
     }
-
+    
     if(this.state.startDateTemp > this.state.endDateTemp){
       this.state.formErrors["date"] = "Start date should be less than end date";
+    }
+    else if(this.state.startDateTemp === this.getCurrentDate() && this.state.startTime < this.getCurrentTime()){
+      console.log("herr");
+     this.state.formErrors["date"] = "Start time should not be a time in past."; 
     }
     else if(this.state.startDateTemp === this.state.endDateTemp && this.state.startTime > this.state.endTime){
      this.state.formErrors["date"] = "Start time should be before end time for same date"; 

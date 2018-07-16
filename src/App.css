@@ -14,6 +14,7 @@
   color: white;
 }
 
+
 .header-color{
   background-color: #EC1D23;
 }
@@ -193,6 +194,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.link-style h5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 767px) {
